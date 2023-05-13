@@ -26,10 +26,6 @@
     list-style-image: url("chrome://browser/skin/customize.svg") !important;
   }
   
-  #browserContainersExtensionContent {
-    display: none !important;
-  }
-  
   #communityDesc {
     padding: 25px 0px 25px 0px;
   }
