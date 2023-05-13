@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   windows-x86-64-build-with-enable-profile-generate:
-    if: (github.event_name == 'schedule' && github.repository_owner == 'Floorp-Projects') || (github.event_name != 'schedule')
+    if: (github.event_name == 'schedule' && github.repository_owner == 'surapunoyousei') || (github.event_name != 'schedule')
 
     name: Windows x86_64 Build with --enable-profile-generate
 
