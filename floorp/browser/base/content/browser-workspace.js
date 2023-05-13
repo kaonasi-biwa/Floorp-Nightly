@@ -6,9 +6,10 @@
 const WORKSPACE_TAB_ENABLED_PREF = "floorp.browser.workspace.tab.enabled";
 const WORKSPACE_CURRENT_PREF = "floorp.browser.workspace.current";
 const WORKSPACE_ALL_PREF = "floorp.browser.workspace.all";
+let workspaceAll = Services.prefs.getCharPref(WORKSPACE_ALL_PREF).split(",");
 const WORKSPACE_TABS_PREF = "floorp.browser.workspace.tabs.state";
 const l10n = new Localization(["browser/floorp.ftl"], true);
-const defaultWorkspaceName = l10n.formatValueSync("workspace-default")
+const defaultWorkspaceName = l10n.formatValueSync("workspace-default");
 
 function initWorkspace() { 
   // First run
@@ -60,7 +61,7 @@ function changeWorkspaceToNext() {
 }
 
 function deleteworkspace(workspace) {
- if  (workspace !== defaultWorkspaceName) {
+ if  (workspace !== workspaceAll[0]) {
   let allWorkspaces = Services.prefs.getCharPref(WORKSPACE_ALL_PREF).split(",");
   let index = allWorkspaces.indexOf(workspace);
   let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
@@ -68,7 +69,7 @@ function deleteworkspace(workspace) {
   //move to other workspace
   if (currentWorkspace == workspace) {
     changeWorkspace(allWorkspaces[0]);
-    Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, defaultWorkspaceName);
+    Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, allWorkspaces[0]);
     setCurrentWorkspace();
   }
   allWorkspaces.splice(index, 1);
@@ -111,7 +112,7 @@ function setCurrentWorkspace() {
       gBrowser.hideTab(tab);
     }
 
-    if(currentWorkspace != l10n.formatValueSync("workspace-default")){
+    if(currentWorkspace != workspaceAll[0]){
       document.getElementById("workspace-button").setAttribute("label", currentWorkspace);
       document.querySelector("#workspace-button > .toolbarbutton-text").style.display = "inherit"
     } else {
@@ -147,7 +148,7 @@ function addWorkspaceElemToMenu(label) {
   `);
   document.getElementById("workspace-menu-separator").before(workspaceItemElem);
 
-  if (label !== defaultWorkspaceName) {
+  if (label !== workspaceAll[0]) {
     let deleteButtonElem = window.MozXULElement.parseXULToFragment(`
         <toolbarbutton id="workspace-delete" class="workspace-item-delete toolbarbutton-1"
                        oncommand="deleteworkspace('${label}')"/>
