@@ -206,6 +206,7 @@ for (const type of [
   "SETTINGS_CLOSE",
   "SETTINGS_OPEN",
   "SET_PREF",
+  "GET_IMAGE",
   "SHOW_DOWNLOAD_FILE",
   "SHOW_FIREFOX_ACCOUNTS",
   "SHOW_PRIVACY_INFO",
@@ -456,6 +457,11 @@ function SetPref(name, value, importContext = globalImportContext) {
   return importContext === UI_CODE ? AlsoToMain(action) : action;
 }
 
+function GetImageSend(path, importContext = globalImportContext) {
+  const action = { type: actionTypes.GET_IMAGE, data: { path } };
+  return importContext === UI_CODE ? AlsoToMain(action) : action;
+}
+
 function WebExtEvent(type, data, importContext = globalImportContext) {
   if (!data || !data.source) {
     throw new Error(
@@ -478,6 +484,7 @@ const actionCreators = {
   OnlyToMain,
   AlsoToPreloaded,
   SetPref,
+  GetImageSend,
   WebExtEvent,
   DiscoveryStreamImpressionStats,
   DiscoveryStreamLoadedContent,
@@ -14693,44 +14700,66 @@ const Search_Search = (0,external_ReactRedux_namespaceObject.connect)(state => (
 const imgLength = 100;
 function Background(props) {
   if (props.className == "random_image") {
-    let [imgSrc] = (0,external_React_namespaceObject.useState)(`chrome://browser/skin/newtabbg-${Math.floor(Math.random() * imgLength)}.webp`);
+    let [imgSrc, setImgSrc] = (0,external_React_namespaceObject.useState)({
+      "url": `chrome://browser/skin/newtabbg-${Math.floor(Math.random() * imgLength)}.webp`
+    });
+
+    if (!imgSrc.url.startsWith("chrome://browser/skin/newtabbg-")) {
+      setImgSrc({
+        "url": `chrome://browser/skin/newtabbg-${Math.floor(Math.random() * imgLength)}.webp`
+      });
+    }
+
     return /*#__PURE__*/external_React_default().createElement("div", {
       id: "background_back",
       className: props.className
     }, /*#__PURE__*/external_React_default().createElement("div", {
       id: "background",
       style: {
-        "--background-url": `url(${imgSrc})`
+        "--background-url": `url(${imgSrc.url})`
       }
     }));
-  }
-
-  console.log(props.imageList);
-
-  if (props.className == "selected_folder" && props.imageList != undefined) {
+  } else if (props.className == "selected_folder" && props.imageList != undefined) {
     let [fileImgSrc, setFileImgSrc] = (0,external_React_namespaceObject.useState)({
       "url": props.imageList.urls.length != 0 ? props.imageList.urls[Math.floor(Math.random() * props.imageList.urls.length)] : ""
     });
 
     if (props.imageList.urls.length != 0) {
-      if (props.imageList.urls.indexOf(fileImgSrc.url) == -1) {
+      var _props$pref, _props$pref2;
+
+      if (props.imageList.urls.indexOf(fileImgSrc.url) == -1 || ((_props$pref = props.pref["floorpBackgroundPathsVal_" + fileImgSrc.url]) === null || _props$pref === void 0 ? void 0 : _props$pref.data) === null) {
         fileImgSrc.url = props.imageList.urls.length != 0 ? props.imageList.urls[Math.floor(Math.random() * props.imageList.urls.length)] : "";
+        setFileImgSrc({
+          "url": fileImgSrc.url
+        });
         if ("blobData" in fileImgSrc) delete fileImgSrc.blobData;
       }
 
-      if (!("blobData" in fileImgSrc)) {
-        setImgData(props.imageList.data[fileImgSrc.url].data, fileImgSrc.url, props.imageList.data[fileImgSrc.url].type, setFileImgSrc);
-      } else {
+      if ("data" in fileImgSrc) {
         return /*#__PURE__*/external_React_default().createElement("div", {
           id: "background_back",
           className: props.className
         }, /*#__PURE__*/external_React_default().createElement("div", {
           id: "background",
           style: {
-            "--background-url": `url(${fileImgSrc.blobData})`
+            "--background-url": `url(${fileImgSrc.data})`
           }
         }));
+      } else if (((_props$pref2 = props.pref["floorpBackgroundPathsVal_" + fileImgSrc.url]) === null || _props$pref2 === void 0 ? void 0 : _props$pref2.data) != undefined) {
+        setImgData(props.pref["floorpBackgroundPathsVal_" + fileImgSrc.url].data, fileImgSrc.url, props.pref["floorpBackgroundPathsVal_" + fileImgSrc.url].type, setFileImgSrc);
+      } else {
+        props.getImg(fileImgSrc.url);
       }
+
+      return /*#__PURE__*/external_React_default().createElement("div", {
+        id: "background_back",
+        className: props.className
+      }, /*#__PURE__*/external_React_default().createElement("div", {
+        id: "background",
+        style: {
+          "--background-url": `url(${fileImgSrc.data})`
+        }
+      }));
     } else if (fileImgSrc.url != "") {
       setFileImgSrc({
         "url": ""
@@ -14752,7 +14781,7 @@ async function setImgData(data, url, type, result) {
   }));
   result({
     "url": url,
-    "blobData": blobURL
+    "data": blobURL
   });
 }
 ;// CONCATENATED MODULE: ./content-src/components/Base/Base.jsx
@@ -14861,6 +14890,7 @@ class BaseContent extends (external_React_default()).PureComponent {
     this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
     this.onWindowScroll = debounce(this.onWindowScroll.bind(this), 5);
     this.setPref = this.setPref.bind(this);
+    this.getImageSend = this.getImageSend.bind(this);
     this.state = {
       fixedSearch: false,
       customizeMenuVisible: false
@@ -14934,6 +14964,10 @@ class BaseContent extends (external_React_default()).PureComponent {
     this.props.dispatch(actionCreators.SetPref(pref, value));
   }
 
+  getImageSend(path) {
+    this.props.dispatch(actionCreators.GetImageSend(path));
+  }
+
   render() {
     const {
       props
@@ -14986,9 +15020,13 @@ class BaseContent extends (external_React_default()).PureComponent {
         break;
     }
 
-    return /*#__PURE__*/external_React_default().createElement("div", null, /*#__PURE__*/external_React_default().createElement(Background, {
+    return /*#__PURE__*/external_React_default().createElement("div", {
+      className: prefs["floorp.newtab.backdrop.blur.disable"] ? "" : "floorp-backdrop-blur-enable"
+    }, /*#__PURE__*/external_React_default().createElement(Background, {
       className: Background_ClassName,
-      imageList: prefs["backgroundPaths"]
+      imageList: prefs["backgroundPaths"],
+      getImg: this.getImageSend,
+      pref: prefs
     }), /*#__PURE__*/external_React_default().createElement(CustomizeMenu, {
       onClose: this.closeCustomizationMenu,
       onOpen: this.openCustomizationMenu,

@@ -319,6 +319,9 @@ newtab-background-folder-choose = Choose Images Folder
 
 newtab-background-extensions = Images' Extensions (Separated by ",")
 
+disable-blur-on-newtab = 
+  .label = Disable blur effect on { -brand-short-name } Home
+
 ## lepton preferences
 
 about-lepton = Customize { -brand-short-name } with Lepton

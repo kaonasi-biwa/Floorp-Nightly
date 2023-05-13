@@ -36,6 +36,8 @@ XPCOMUtils.defineLazyModuleGetters(lazy, {
 
 class PrefsFeed {
   constructor(prefMap) {
+    this.imagesDataPath = {urls:[]};
+    this.fetchedImages = {}
     this._prefMap = prefMap;
     this._prefs = new Prefs();
     this.onExperimentUpdated = this.onExperimentUpdated.bind(this);
@@ -200,6 +202,7 @@ class PrefsFeed {
       false
     );
     this._setIntPref(values, "floorp.background.type", 0);
+    this._setBoolPref(values, "floorp.newtab.backdrop.blur.disable", false);
     this._setBoolPref(values, "discoverystream.isCollectionDismissible", false);
     this._setBoolPref(values, "discoverystream.hardcoded-basic-layout", false);
     this._setBoolPref(values, "discoverystream.personalization.enabled", false);
@@ -235,8 +238,8 @@ class PrefsFeed {
       let folderExists = await IOUtils.exists(tPath)
       if (folderExists) {
         let imagesPath = await IOUtils.getChildren(tPath)
-        let str = new RegExp(`\\.(${Services.prefs.getStringPref("browser.newtabpage.activity-stream.floorp.background.images.extensions", "").split(",").join("|")})+$`)
-        let imagesDataPath = {data:{},urls:[]}
+        let str = new RegExp(`\\.(${Services.prefs.getStringPref("browser.newtabpage.activity-stream.floorp.background.images.extensions", "").split(",").join("|").toLowerCase()})+$`)
+        this.imagesDataPath = {urls:[]}
         
         this.store.dispatch(
           ac.BroadcastToContent({
@@ -244,29 +247,18 @@ class PrefsFeed {
             data: { name: "backgroundPaths", value: {data:{},urls:[]} },
           })
         );
+        this.fetchedImages = {}
         if (imagesPath != 0) {
           for (let elem of imagesPath) {
-            if (!str.test(elem)) continue
             let filePath = Services.io.newFileURI(FileUtils.File(elem)).asciiSpec
-            imagesDataPath.urls.push(filePath)
-            imagesDataPath.data[filePath] = {}
-
-            let blobData = await (await fetch(filePath)).blob()
-            imagesDataPath.data[filePath].type = blobData.type
-            let promise = new Promise(resolve => {
-              const fr = new FileReader()
-              fr.onload = e => resolve(e.target.result)
-              fr.readAsArrayBuffer(blobData)
-            })
-            imagesDataPath.data[filePath].data = await promise
+            this.imagesDataPath.urls.push(filePath)
           }
-
         }
-        console.log(imagesDataPath)
+        console.log(this.imagesDataPath)
         this.store.dispatch(
           ac.BroadcastToContent({
             type: at.PREF_CHANGED,
-            data: { name: "backgroundPaths", value: imagesDataPath },
+            data: { name: "backgroundPaths", value: this.imagesDataPath },
           })
         );
 
@@ -326,7 +318,31 @@ class PrefsFeed {
       case at.UPDATE_SECTION_PREFS:
         this._setIndexedDBPref(action.data.id, action.data.value);
         break;
+      case at.GET_IMAGE:
+        this.sendImgReply(action.data.path)
     }
+  }
+  
+  async sendImgReply(path){
+    if(!(path in this.fetchedImages)){
+      let blobData = await (await fetch(path)).blob()
+      this.fetchedImages[path] = {}
+      this.fetchedImages[path].type = blobData.type
+      let promise = new Promise(resolve => {
+        const fr = new FileReader()
+        fr.onload = e => resolve(e.target.result)
+        fr.readAsArrayBuffer(blobData)
+      })
+      this.fetchedImages[path].data = await promise.catch(() => null)
+    }
+    let returnValue = this.fetchedImages[path]
+    console.log("floorpBackgroundPathsVal_" + path)
+    this.store.dispatch(
+      ac.BroadcastToContent({
+        type: at.PREF_CHANGED,
+        data: { name: "floorpBackgroundPathsVal_" + path, value: returnValue },
+      })
+    );
   }
 }
 
