@@ -11,34 +11,54 @@ const l10n = new Localization(["browser/floorp.ftl"], true);
 const defaultWorkspaceName = l10n.formatValueSync("workspace-default")
 
 function initWorkspace() { 
-    //first run
-    if (Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF) == "") {
-      Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, defaultWorkspaceName);
-      Services.prefs.setStringPref(WORKSPACE_ALL_PREF, defaultWorkspaceName);
-    }
-    let tabs = gBrowser.tabs;
-    if(Services.prefs.getStringPref(WORKSPACE_TABS_PREF) == "[]"){
-      for (let i = 0; i < tabs.length; i++) {
-        tabs[i].setAttribute("floorp-workspace", Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF));
-      }
-    } else {
-      for (let i = 0; i < tabs.length; i++) {
-        let tabsState = JSON.parse(Services.prefs.getStringPref(WORKSPACE_TABS_PREF));
-        let tabStateSetting = tabsState[i];
-        let workspace = tabStateSetting?.[i]?.workspace ?? Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
-        tabs[i].setAttribute("floorp-workspace", workspace);
-      }  
-    }
-    //add workspace menu form pref
-    let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
-    for (let i = 0; i < workspaceAll.length; i++) {
-      let label = workspaceAll[i];
-      addWorkspaceElemToMenu(label);
-    }
+  // First run
+  if (!Services.prefs.prefHasUserValue(WORKSPACE_CURRENT_PREF)) {
+    Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, defaultWorkspaceName);
+    Services.prefs.setStringPref(WORKSPACE_ALL_PREF, defaultWorkspaceName);
+  }
 
-    //add attribute to tab
-    addLastShowedWorkspaceTab();
+  let tabs = gBrowser.tabs;
+
+  if (Services.prefs.getStringPref(WORKSPACE_TABS_PREF) === "[]") {
+    for (let i = 0; i < tabs.length; i++) {
+      tabs[i].setAttribute("floorp-workspace", Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF));
+    }
+  } else {
+    let tabsState = JSON.parse(Services.prefs.getStringPref(WORKSPACE_TABS_PREF));
+    for (let i = 0; i < tabs.length; i++) {
+      let tabStateSetting = tabsState[i];
+      let workspace = tabStateSetting?.[i]?.workspace ?? Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+      tabs[i].setAttribute("floorp-workspace", workspace);
+    }
+  }
+
+  // Add workspace menu from preference
+  let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+  for (let i = 0; i < workspaceAll.length; i++) {
+    let label = workspaceAll[i];
+    addWorkspaceElemToMenu(label);
+  }
+
+  // Add attribute to tab
+  addLastShowedWorkspaceTab();
+
+  //add keybooard shortcut
+
+  let keyElem = document.createElement("key");
+  keyElem.setAttribute("id", "floorp-workspace-key");
+  keyElem.setAttribute("keycode", "VK_F9");
+  keyElem.setAttribute("oncommand", "restartbrowser();");
+  document.getElementById("mainKeyset").appendChild(keyElem);
 }
+
+function changeWorkspaceToNext() {
+  let allWorkspaces = Services.prefs.getCharPref(WORKSPACE_ALL_PREF).split(",");
+  let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+  let index = allWorkspaces.indexOf(currentWorkspace);
+  let nextWorkspace = allWorkspaces[index + 1] ?? allWorkspaces[0];
+  changeWorkspace(nextWorkspace);
+}
+
 function deleteworkspace(workspace) {
  if  (workspace !== defaultWorkspaceName) {
   let allWorkspaces = Services.prefs.getCharPref(WORKSPACE_ALL_PREF).split(",");
@@ -352,6 +372,17 @@ function handleWorkspaceTabPrefChange() {
   setCurrentWorkspace(); // Add event listeners
 }
 
+function handle_keydown(event) {
+  if (event.shiftKey && event.key === 'ArrowUp') {
+    console.log("shift + up");
+
+  }
+
+  if (event.shiftKey && event.key === 'ArrowDown') {
+
+  }
+}
+
 window.setTimeout(function(){
   let list = Services.wm.getEnumerator("navigator:browser");
   while (list.hasMoreElements()) { if (list.getNext() != window) return; }
@@ -386,4 +417,6 @@ window.setTimeout(function(){
 
   Services.prefs.addObserver(WORKSPACE_CURRENT_PREF, handleWorkspacePrefChange, false);
   Services.prefs.addObserver(WORKSPACE_TAB_ENABLED_PREF, handleWorkspaceTabPrefChange, false);
+
+  document.addEventListener('keydown', handle_keydown, false);
 }, 1000);
