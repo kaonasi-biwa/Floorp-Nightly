@@ -372,14 +372,37 @@ function handleWorkspaceTabPrefChange() {
   setCurrentWorkspace(); // Add event listeners
 }
 
+function changeWorkspaceToBeforeNext() {
+  let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+  let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+  let index = workspaceAll.indexOf(currentWorkspace);
+  if (index == 0) {
+    return;
+  }
+  let beforeWorkspace = workspaceAll[index - 1];
+  changeWorkspace(beforeWorkspace);
+  setCurrentWorkspace();
+}
+
+function changeWorkspaceToAfterNext() {
+  let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+  let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+  let index = workspaceAll.indexOf(currentWorkspace);
+  if (index == workspaceAll.length - 1) {
+    return;
+  }
+  let afterWorkspace = workspaceAll[index + 1];
+  changeWorkspace(afterWorkspace);
+  setCurrentWorkspace();
+}
+
 function handle_keydown(event) {
   if (event.shiftKey && event.key === 'ArrowUp') {
-    console.log("shift + up");
-
+    changeWorkspaceToBeforeNext();
   }
 
   if (event.shiftKey && event.key === 'ArrowDown') {
-
+    changeWorkspaceToAfterNext();
   }
 }
 
