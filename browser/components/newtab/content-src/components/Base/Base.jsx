@@ -112,6 +112,7 @@ export class BaseContent extends React.PureComponent {
     this.handleOnKeyDown = this.handleOnKeyDown.bind(this);
     this.onWindowScroll = debounce(this.onWindowScroll.bind(this), 5);
     this.setPref = this.setPref.bind(this);
+    this.getImageSend = this.getImageSend.bind(this);
     this.state = { fixedSearch: false, customizeMenuVisible: false };
   }
 
@@ -161,6 +162,10 @@ export class BaseContent extends React.PureComponent {
 
   setPref(pref, value) {
     this.props.dispatch(ac.SetPref(pref, value));
+  }
+
+  getImageSend(path){
+    this.props.dispatch(ac.GetImageSend(path));
   }
 
   render() {
@@ -233,8 +238,8 @@ export class BaseContent extends React.PureComponent {
       }
 
     return (
-      <div>
-        <Background className={Background_ClassName} imageList={prefs["backgroundPaths"]}/>
+      <div className={prefs["floorp.newtab.backdrop.blur.disable"] ? "" : "floorp-backdrop-blur-enable"}>
+        <Background className={Background_ClassName} imageList={prefs["backgroundPaths"]} getImg={this.getImageSend} pref={prefs} />
         <CustomizeMenu
           onClose={this.closeCustomizationMenu}
           onOpen={this.openCustomizationMenu}
