@@ -25,6 +25,7 @@ jobs:
     name: Windows x86_64 Build with --enable-profile-generate
 
     runs-on: ${{ matrix.runs-on }}
+    permissions: write-all
     strategy:
       matrix:
         runs-on: ['ubuntu-22.04']
@@ -396,7 +397,7 @@ jobs:
         cp obj-x86_64-pc-mingw32/dist/output.mar $RUNNER_USERDIR/output/update.mar
         cp obj-x86_64-pc-mingw32/dist/update.xml $RUNNER_USERDIR/output/update.xml
     
-    - name: Create BETA tag & release 🏷️
+    - name: Create BETA tag 🏷️
       continue-on-error: true
       env:
        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -405,10 +406,12 @@ jobs:
          git push -f origin BETA
 
     - name: Get a current date 
-      run: echo "NOW=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+      run: echo "NOW=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
     - name: Create Release
       uses: "marvinpinto/action-automatic-releases@latest"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         automatic_release_tag: BETA
