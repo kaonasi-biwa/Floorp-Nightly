@@ -52,6 +52,7 @@ if (Services.prefs.getBoolPref("floorp.browser.native.downloadbar.enabled", true
     }
     #downloadsListBox > richlistitem {
       margin: 3px 6px 3px 6px !important;
+      max-width: min-content !important;
     }
     #emptyDownloads {
       display: none !important;
@@ -60,6 +61,7 @@ if (Services.prefs.getBoolPref("floorp.browser.native.downloadbar.enabled", true
       display: none !important;
     }
     #downloadsListBox {
+      background: var(--toolbar-bgcolor);
       display: flex !important;
       width: auto !important;
     }
