@@ -130,7 +130,7 @@ jobs:
 
     - name: Change update url
       run: |
-        sed -i 's/^URL=https:\/\/@MOZ_APPUPDATE_HOST@\/browser\/%DISPLAY_VERSION%\/%OS%\/%ARCH%/ URL=https:\/\/github.com\/Floorp-Projects\/Floorp\/releases\/download\/BETA/' ./build/application.ini.in
+        sed -i -e "s/URL=https:\/\/@MOZ_APPUPDATE_HOST@\/update\/6\/%PRODUCT%\/%VERSION%\/%BUILD_ID%\/%BUILD_TARGET%\/%LOCALE%\/%CHANNEL%\/%OS_VERSION%\/%SYSTEM_CAPABILITIES%\/%DISTRIBUTION%\/%DISTRIBUTION_VERSION%\/update\.xml/https:\/\/github\.com\/Floorp-Projects\/Floorp-Nightly\/releases\/download\/BETA\/update\.xml/g" ./build/application.ini.in
 
     - name: Build 🔨
       run: |
@@ -328,7 +328,7 @@ jobs:
 
     - name: Change update url
       run: |
-        sed -i 's/^URL=https:\/\/@MOZ_APPUPDATE_HOST@\/browser\/%DISPLAY_VERSION%/URL=https:\/\/@MOZ_APPUPDATE_HOST@\/browser\/beta/' ./build/application.ini.in
+        sed -i -e "s/URL=https:\/\/@MOZ_APPUPDATE_HOST@\/update\/6\/%PRODUCT%\/%VERSION%\/%BUILD_ID%\/%BUILD_TARGET%\/%LOCALE%\/%CHANNEL%\/%OS_VERSION%\/%SYSTEM_CAPABILITIES%\/%DISTRIBUTION%\/%DISTRIBUTION_VERSION%\/update\.xml/https:\/\/github\.com\/Floorp-Projects\/Floorp-Nightly\/releases\/download\/BETA\/update\.xml/g" ./build/application.ini.in
 
     - name: Copy l10n files
       run: |
