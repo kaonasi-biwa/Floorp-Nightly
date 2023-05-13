@@ -11,7 +11,7 @@
    .tabbrowser-tab[hidden="true"] {
     display: none !important;
   }
-   
+
    #TabsToolbar-customization-target {
      width: -moz-available !important;
      min-width: -moz-available !important;
@@ -198,7 +198,7 @@
    .tabbrowser-tab[context]:not([pinned]) .tab-icon-stack, tab-label-container {
      margin-left: 0 !important;
    }
-   
+
     :root[tabsintitlebar] #titlebar .titlebar-buttonbox-container:not(#hack) {
      display: block !important;
      position: fixed !important;
@@ -211,4 +211,8 @@
    
    .tabbrowser-tab[label="Floorp View"], .tabbrowser-tab[label="Firefox View"] {
      display: none !important;
+   }
+
+   #tabbrowser-arrowscrollbox-periphery > .closing-tabs-spacer {
+    display: none !important;
    }
