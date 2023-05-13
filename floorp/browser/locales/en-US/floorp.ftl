@@ -464,12 +464,11 @@ about-Smoothfox = Get Edge-like smooth scrolling on your favorite browser — or
 mouse-gesture = Mouse Gesture
 mouse-gesture-description = Gesturefy must be installed to use mouse gestures with { -brand-short-name }.
 Gesturefy = Gesturefy
-about-Gesturefy = Gesturefy is an extension that adds mouse gestures to your browser; if { -brand-short-name } detects the installation of this add-on, it will add gesture commands to Gesturefy that are only available in { -brand-short-name }. Also, this add-on can work with new tabs!
+about-Gesturefy = Gesturefy is an extension that adds mouse gestures to your browser. If { -brand-short-name } detects the installation of this add-on, it will add gesture commands to Gesturefy that are only available in { -brand-short-name }. Also, this add-on can work with new tabs!
 
 # Translate
 TWS = Translate Web Page
-about-TWS = Translate your page in real time using Google or Yandex. You can also translate selected text or the entire page. It is not necessary to open new tabs. The text of the web page is sent to Google, Yandex, etc. for translation.
-
+about-TWS = Translate your page in real time using Google or Yandex. You can also translate selected text or the entire page.
 
 # Privacy Hub
 ## BlockMoreTracker
@@ -480,7 +479,7 @@ view-at-AMO = View this addon in addons.mozilla.org
 uBlock-Origin = uBlock Origin
 about-uboori = uBlock Origin blocks ads, extensive trackers, and additional dangerous sites.
 Facebook-Container = Facebook Container
-about-Facebook-Container = Prevent Facebook from tracking you around the web. The Facebook Container extension for Firefox helps you take control and isolate your web activity from Facebook.
+about-Facebook-Container = Prevent Facebook from tracking you around the web. Facebook Container extension helps you take control and isolate your web activity from Facebook.
 
 ## Fingerprint
 fingerprint-header = Resist Fingerprinting & IP address leak
@@ -720,7 +719,7 @@ save-memo = Save
 memo-welcome-title = Welcome!
 memo-first-tip = Welcome to Floorp Notes! Here are some instructions on how to use it!
 memo-second-tip = Floorp Notes is a notepad that lets you store multiple notes that sync across devices. To enable synchronization, you need to sign in to Floorp with your Firefox account.
-memo-third-tip = Floorp Notes will be saved in your Floorp settings. Also, Firefox Sync encrypts the contents of the sync with your Firefox account password, so no one but you knows it's contents.
+memo-third-tip = Floorp Notes will be saved in your Floorp settings and synchronized across devices using Firefox Sync. Firefox Sync encrypts the contents of the sync with your Firefox account password, so no one but you knows it's contents.
 memo-fourth-tip = Firefox Sync is not a backup service. We recommend you to create backups.
 memo-new-title = New Note
 chage-view-mode = Toggle View/Edit Mode
