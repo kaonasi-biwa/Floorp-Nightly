@@ -108,6 +108,17 @@
                  }
                  contextWebpanel.remove();
              },
+             unloadWebpanelWithId:(id)=>{
+                    let sidebarsplit2 = document.getElementById("sidebar-splitter2");
+                    if(id == bmsController.nowPage){
+                          bmsController.nowPage = null;
+                          bmsController.controllFunctions.visibleWebpanel();
+                      if (sidebarsplit2.getAttribute("hidden") != "true") {
+                         bmsController.controllFunctions.changeVisibleWenpanel();
+                      }
+                  }
+                 document.getElementById(`webpanel${id}`).remove();
+             },
              changeUserAgent:()=>{
                  BROWSER_SIDEBAR_DATA.data[clickedWebpanel.replace("select-", "")].userAgent = ((document.getElementById(clickedWebpanel.replace("select-", "webpanel")).getAttribute("changeuseragent") ?? "false") == "false")
  
@@ -147,6 +158,12 @@
              bmsController.controllFunctions.changeVisibleCommandButton(selectedURL.startsWith("floorp//"))
              for (let elem of document.getElementsByClassName("webpanels")) {
                  elem.hidden = true;
+            
+                if(elem.classList.contains("isFloorp")){   
+                    let src = elem.getAttribute("src");
+                    elem.setAttribute("src", "");
+                    elem.setAttribute("src", src);
+                }
              }
              if(document.getElementById("sidebar-splitter2").getAttribute("hidden") == "true"){
                 bmsController.controllFunctions.changeVisibleWenpanel();
