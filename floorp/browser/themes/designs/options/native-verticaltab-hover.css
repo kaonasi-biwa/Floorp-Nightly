@@ -90,3 +90,10 @@ margin:auto !important;
     margin-left: calc((var(--hoverd-verticaltab-width) - var(--default-vertitaltab-width) - 12px) * -1) !important;
   }
   
+  /* if tab doesn't have an icon, make sure it still has tab icon */
+
+  .tab-icon-image:not([src]) {
+    width: 16px !important;
+    height: 16px !important;
+    display: inherit !important;
+  }
