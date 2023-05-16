@@ -1311,8 +1311,6 @@ border-bottom: 1.1px solid var(--toolbar-bgcolor);
 }*/
 
 :root[privatebrowsingmode] #fxa-toolbar-menu-button {
-  background: var(--uc-private-browsing-indicator, var(--lwt-toolbarbutton-icon-fill-attention, var(--toolbarbutton-icon-fill-attention))) !important;
-  margin: 4px !important;
   padding-inline: 8px 0 !important;
   color: var(--uc-private-browding-indicator-text, var(--toolbar-bgcolor)) !important;
   fill: currentColor !important;
@@ -1354,18 +1352,10 @@ border-bottom: 1.1px solid var(--toolbar-bgcolor);
 
   fill: currentColor !important;
   fill-opacity: 0 !important;
-
-  background-image:
-    url(chrome://browser/skin/circle.svg),
-    url(chrome://browser/skin/circle.svg) !important;
-  background-size: 25% !important;
-  background-repeat: no-repeat !important;
-  background-position: center !important;
   background-color: transparent !important;
   font-size: 13.2px !important;
   padding: 0 !important;
   margin: 0;
-  border: 2px solid transparent !important;
 }
 
 #navigator-toolbox :-moz-any(.toolbarbutton-1, toolbarbutton.bookmark-item:not(.subviewbutton))[disabled],
@@ -1445,8 +1435,7 @@ border-bottom: 1.1px solid var(--toolbar-bgcolor);
 /* tab icons */
 .tab-icon-image[src="chrome://global/skin/icons/settings.svg"],
 .tab-icon-image[src="chrome://mozapps/skin/extensions/extension.svg"],
-.tab-icon-image[src="chrome://browser/skin/customize.svg"],
-.tab-icon-image[src="chrome://browser/skin/privatebrowsing/favicon.svg"] {
+.tab-icon-image[src="chrome://browser/skin/customize.svg"]{
   padding-left: 16px !important;
   box-sizing: border-box !important;
 }
@@ -3477,4 +3466,10 @@ richlistitem[originaltype="loginsFooter"] .ac-site-icon {
 
 #tab-icon-image{
   opacity: 1 !important;
+}
+
+/* fix workspace icon */
+#workspace-button > .toolbarbutton-icon {
+  max-width: calc(2 * var(--toolbarbutton-inner-padding) + 16px) !important;
+  max-height: calc(2 * var(--toolbarbutton-inner-padding) + 16px) !important;
 }

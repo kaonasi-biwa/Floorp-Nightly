@@ -345,7 +345,6 @@
   color: var(--toolbar-bgcolor) !important;
   fill: currentColor !important;
   border-radius: 15px;
-  padding: 0px 0px 0px 10px;
   max-height: 25px;
 }
 
@@ -355,6 +354,7 @@
   font-size: 12px !important;
   font-weight: bold;
   margin: auto;
+  padding-left: 10px !important;
 }
 
  :root[privatebrowsingmode] #fxa-avatar-image {
