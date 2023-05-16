@@ -92,7 +92,7 @@ margin:auto !important;
   
   /* if tab doesn't have an icon, make sure it still has tab icon */
 
-  .tab-icon-image:not([src]) {
+  .tab-icon-image:not([src], [busy]) {
     width: 16px !important;
     height: 16px !important;
     display: inherit !important;
