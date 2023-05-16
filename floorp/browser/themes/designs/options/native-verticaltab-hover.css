@@ -115,7 +115,7 @@ margin:auto !important;
 }
 
 .tab-label-container[pinned="true"]::after {
-  content: "Pinned 📌";
+  content: "Pinned";
   font-size: 8.5px;
   margin-top: -5px;
   color: var(--panel-description-color);
