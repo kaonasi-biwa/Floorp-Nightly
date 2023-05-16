@@ -97,3 +97,27 @@ margin:auto !important;
     height: 16px !important;
     display: inherit !important;
   }
+
+#tabbrowser-tabs[positionpinnedtabs] > #tabbrowser-arrowscrollbox > .tabbrowser-tab[pinned] {
+  min-width: -moz-available !important;
+}
+
+.tab-icon-stack[pinned="true"] {
+  margin-inline-end: 5.5px;
+}
+
+.tab-label-container[pinned="true"][flex] {
+  display: inherit !important;
+}
+
+.tabbrowser-tab[context][class] {
+  min-width: -moz-available !important;
+}
+
+.tab-label-container[pinned="true"]::after {
+  content: "Pinned 📌";
+  font-size: 8.5px;
+  margin-top: -5px;
+  color: var(--panel-description-color);
+  font-weight: bold;
+}
