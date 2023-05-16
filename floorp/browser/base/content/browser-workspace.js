@@ -49,6 +49,8 @@ function initWorkspace() {
   keyElem.setAttribute("keycode", "VK_F9");
   keyElem.setAttribute("oncommand", "restartbrowser();");
   document.getElementById("mainKeyset").appendChild(keyElem);
+
+  saveWorkspaceState();
 }
 
 function changeWorkspaceToNext() {
