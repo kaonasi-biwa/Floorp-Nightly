@@ -110,7 +110,7 @@ margin:auto !important;
   display: inherit !important;
 }
 
-.tabbrowser-tab[context][class] {
+:root[uidensity] .tabbrowser-tab[context][class], .tabbrowser-tab[context][class] {
   min-width: -moz-available !important;
 }
 
