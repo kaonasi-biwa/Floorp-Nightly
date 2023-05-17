@@ -446,3 +446,7 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 *|*:root[chromehidden~="toolbar"] #workspace-button {
   display: none;
 }
+
+#customizableui-special-spring1 , #customizableui-special-spring2 {
+  display: none !important;
+}

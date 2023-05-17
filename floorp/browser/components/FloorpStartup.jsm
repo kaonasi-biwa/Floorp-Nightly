@@ -27,6 +27,9 @@ const { FileUtils } = ChromeUtils.import(
 const env = Cc["@mozilla.org/process/environment;1"].getService(
     Ci.nsIEnvironment
 );
+const { CustomizableUI } = ChromeUtils.import(
+    "resource:///modules/CustomizableUI.jsm"
+);
 
 // Check information about startup.
 let isFirstRun = false;
@@ -64,9 +67,6 @@ const isMainBrowser = env.get("MOZ_BROWSER_TOOLBOX_PORT") === "";
 
 async function onFinalUIStartup() {
     Services.obs.removeObserver(onFinalUIStartup, "final-ui-startup");
-    const { CustomizableUI } = ChromeUtils.import(
-        "resource:///modules/CustomizableUI.jsm"
-    );
     let { BrowserManagerSidebar } = ChromeUtils.import("resource:///modules/BrowserManagerSidebar.jsm");
     BrowserManagerSidebar.prefsUpdate();
 
@@ -141,6 +141,24 @@ NOTE: You can use the userContent.css file without change preferences (about:con
         setTimeout(() => {
             Services.prefs.setStringPref("browser.contentblocking.category", "strict")
         }, 5000);
+    }
+
+    if(isFirstRun){
+        setTimeout(() => {
+          let fxViewButton = CustomizableUI.getWidget("firefox-view-button");
+          if (fxViewButton) {
+              CustomizableUI.moveWidgetWithinArea("firefox-view-button", 1000);
+          } else {
+              console.error("Can't find the Firefox (Floorp) View button.");
+          }
+
+          let clockButton = CustomizableUI.getWidget("toolbarItemClock");
+          if (clockButton) {
+              CustomizableUI.moveWidgetWithinArea("toolbarItemClock", 1000);
+          } else {
+              console.error("Can't find the Clock button.");
+          }
+        }, 1000);
     }
 }
 if (isMainBrowser) {

@@ -43,7 +43,7 @@ pref("floorp.material.effect.enable", false);//マテリアルモードの実装
 pref("floorp.disable.fullscreen.notification", false);//フルスクリーン通知を無効化
 pref("floorp.navbar.bottom", false);
 pref("floorp.tabs.showPinnedTabsTitle", false); //ピン留めされたタブのタイトルを表示
-pref("floorp.delete.browser.border", false); //ブラウザーの枠線削除＆丸くする
+pref("floorp.delete.browser.border", true); //ブラウザーの枠線削除＆丸くする
 
 //Fluerial UIの設定
 pref("floorp.fluerial.roundVerticalTabs",false); //垂直タブのタブの形 trueが横に引っ付けるやつ、falseは角丸長方形
@@ -126,7 +126,7 @@ pref("services.sync.prefs.sync.floorp.browser.note.memos", true);
 pref("floorp.browser.note.enabled", false);
 
 //Clock
-pref("floorp.browser.clock.enabled", false);
+pref("floorp.browser.clock.enabled", true);
 
 //BMS Search
 pref("browser.search.useDefault.enabled", false);
@@ -146,6 +146,9 @@ pref("floorp.browser.workspace.tabs.state", "[]");
 pref("floorp.browser.workspace.current", "");
 pref("floorp.browser.workspace.all", "");
 pref("floorp.browser.workspace.tab.enabled",true);
+
+//ブックマークツールバー
+pref("browser.toolbars.bookmarks.visibility", "always");
 /*----------------------------------------------------------------------------------------------------------------------------------*/
 
 //検索エンジン
