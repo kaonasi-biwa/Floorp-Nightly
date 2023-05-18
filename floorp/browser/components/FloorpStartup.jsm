@@ -137,12 +137,6 @@ NOTE: You can use the userContent.css file without change preferences (about:con
         Services.prefs.deleteBranch("floorp.tabbar.style")
     } 
 
-    if (isFirstRun) {
-        setTimeout(() => {
-            Services.prefs.setStringPref("browser.contentblocking.category", "strict")
-        }, 5000);
-    }
-
     if(isFirstRun){
         setTimeout(() => {
           let fxViewButton = CustomizableUI.getWidget("firefox-view-button");
