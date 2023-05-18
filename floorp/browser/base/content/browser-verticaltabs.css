@@ -44,8 +44,8 @@
    #sidebar-box {
      --floorp-verticaltab-maxwidth: 50em;
      --floorp-verticaltab-minwidth: 3em;
-     max-width: var(--hovering-verticaltab-width, --floorp-verticaltab-maxwidth) !important;
-     min-width: var(--hovering-verticaltab-width, --floorp-verticaltab-minwidth) !important;
+     max-width: var(--hovering-verticaltab-width, 50em) !important;
+     min-width: var(--hovering-verticaltab-width, 3em) !important;
    }
    
    #tabbrowser-tabs[haspinnedtabs]:not([positionpinnedtabs])>#tabbrowser-arrowscrollbox>.tabbrowser-tab[first-visible-unpinned-tab] {
