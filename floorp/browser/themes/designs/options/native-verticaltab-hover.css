@@ -43,7 +43,6 @@
   #sidebar-box {
     --hovering-verticaltab-width: calc( var(--default-vertitaltab-width) + 12px);
     width: var(--default-vertitaltab-width) !important;
-    transition: all 200ms !important;
     transition-delay: 0.2s !important;
   }
 
