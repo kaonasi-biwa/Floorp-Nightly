@@ -67,6 +67,7 @@ var gLeptonPane = {
 document.getElementById("backtogeneral").addEventListener("command", function(){gotoPref("design");});
   document.getElementById("lepton-design-mode").addEventListener("click", setLeptonUI, false);
   document.getElementById("photon-design-mode").addEventListener("click", setPhotonUI, false);
+  document.getElementById("protonfix-design-mode").addEventListener("click", setProtonFixUI, false);
   let targets = document.getElementsByClassName("photonCheckbox");
   for(let i = 0; i < targets.length; i++){
     targets[i].addEventListener("click",() => {
@@ -79,26 +80,85 @@ document.getElementById("backtogeneral").addEventListener("command", function(){
 
 function setPhotonUI() {
   Services.prefs.setIntPref("floorp.lepton.interface", 1);
-  Services.prefs.setBoolPref("userChrome.icon.panel_full", false);
-  Services.prefs.setBoolPref("userChrome.tab.bottom_rounded_corner", false);
-  Services.prefs.setBoolPref("userChrome.tab.dynamic_separator" ,false);
-  Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding" ,false);
-  Services.prefs.setBoolPref("userChrome.icon.panel_photon", true);	
-  Services.prefs.setBoolPref("userChrome.rounding.square_tab", true);
-  Services.prefs.setBoolPref("userChrome.tab.photon_like_contextline",true);
-  Services.prefs.setBoolPref("userChrome.tab.photon_like_padding",true);
-  Services.prefs.setBoolPref("userChrome.tab.static_separator", true);
+  Services.prefs.setBoolPref("userChrome.tab.connect_to_window",          true);
+  Services.prefs.setBoolPref("userChrome.tab.color_like_toolbar",         true);
+  
+  Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding",       false);
+  Services.prefs.setBoolPref("userChrome.tab.photon_like_padding",        true);
+  
+  Services.prefs.setBoolPref("userChrome.tab.dynamic_separator",         false);
+  Services.prefs.setBoolPref("userChrome.tab.static_separator",           true);
+  Services.prefs.setBoolPref("userChrome.tab.static_separator.selected_accent", false);
+  Services.prefs.setBoolPref("userChrome.tab.bar_separator",             false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.newtab_button_like_tab",    false);
+  Services.prefs.setBoolPref("userChrome.tab.newtab_button_smaller",      true);
+  Services.prefs.setBoolPref("userChrome.tab.newtab_button_proton",      false);
+  
+  Services.prefs.setBoolPref("userChrome.icon.panel_full",               false);
+  Services.prefs.setBoolPref("userChrome.icon.panel_photon",              true);
+  
+  Services.prefs.setBoolPref("userChrome.tab.box_shadow",                false);
+  Services.prefs.setBoolPref("userChrome.tab.bottom_rounded_corner",     false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.photon_like_contextline",    true);
+  Services.prefs.setBoolPref("userChrome.rounding.square_tab",            true);
   Services.obs.notifyObservers({}, "update-photon-pref");
 }
 
 function setLeptonUI() {
   Services.prefs.setIntPref("floorp.lepton.interface", 2);
-  Services.prefs.setBoolPref("userChrome.tab.bottom_rounded_corner", true);
-  Services.prefs.setBoolPref("userChrome.tab.dynamic_separator" ,true);
-  Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding" ,true);
-  Services.prefs.setBoolPref("userChrome.rounding.square_tab", false);
-  Services.prefs.setBoolPref("userChrome.tab.photon_like_contextline",false);
-  Services.prefs.setBoolPref("userChrome.tab.photon_like_padding",false);
-  Services.prefs.setBoolPref("userChrome.tab.static_separator", false);
+  Services.prefs.setBoolPref("userChrome.tab.connect_to_window",          true);
+  Services.prefs.setBoolPref("userChrome.tab.color_like_toolbar",         true);
+  
+  Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding",        true);
+  Services.prefs.setBoolPref("userChrome.tab.photon_like_padding",       false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.dynamic_separator",          true);
+  Services.prefs.setBoolPref("userChrome.tab.static_separator",          false);
+  Services.prefs.setBoolPref("userChrome.tab.static_separator.selected_accent", false);
+  Services.prefs.setBoolPref("userChrome.tab.bar_separator",             false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.newtab_button_like_tab",     true);
+  Services.prefs.setBoolPref("userChrome.tab.newtab_button_smaller",     false);
+  Services.prefs.setBoolPref("userChrome.tab.newtab_button_proton",      false);
+  
+  Services.prefs.setBoolPref("userChrome.icon.panel_full",                true);
+  Services.prefs.setBoolPref("userChrome.icon.panel_photon",             false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.box_shadow",                 false);
+  Services.prefs.setBoolPref("userChrome.tab.bottom_rounded_corner",      true);
+  
+  Services.prefs.setBoolPref("userChrome.tab.photon_like_contextline",   false);
+  Services.prefs.setBoolPref("userChrome.rounding.square_tab",           false);
+  Services.obs.notifyObservers({}, "update-photon-pref");
+}
+
+function setProtonFixUI() {
+  Services.prefs.setIntPref("floorp.lepton.interface", 3);
+
+  Services.prefs.setBoolPref("userChrome.tab.connect_to_window",         false);
+  Services.prefs.setBoolPref("userChrome.tab.color_like_toolbar",        false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.lepton_like_padding",       false);
+  Services.prefs.setBoolPref("userChrome.tab.photon_like_padding",       false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.dynamic_separator",          true);
+  Services.prefs.setBoolPref("userChrome.tab.static_separator",          false);
+  Services.prefs.setBoolPref("userChrome.tab.static_separator.selected_accent", false);
+  Services.prefs.setBoolPref("userChrome.tab.bar_separator",             false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.newtab_button_like_tab",    false);
+  Services.prefs.setBoolPref("userChrome.tab.newtab_button_smaller",     false);
+  Services.prefs.setBoolPref("userChrome.tab.newtab_button_proton",       true);
+  
+  Services.prefs.setBoolPref("userChrome.icon.panel_full",                true);
+  Services.prefs.setBoolPref("userChrome.icon.panel_photon",             false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.box_shadow",                false);
+  Services.prefs.setBoolPref("userChrome.tab.bottom_rounded_corner",     false);
+  
+  Services.prefs.setBoolPref("userChrome.tab.photon_like_contextline",   false);
+
   Services.obs.notifyObservers({}, "update-photon-pref");
 }

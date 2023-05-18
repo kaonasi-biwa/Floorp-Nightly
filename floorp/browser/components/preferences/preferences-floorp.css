@@ -102,6 +102,17 @@
     min-width: 0px;
     max-height: 65px;
   }
+
+  #protonfix-mode {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid var(--in-content-box-border-color);
+    border-radius: 4px;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
+    transform: scaleX(1);
+    content: url(chrome://browser/skin/protonfix.svg);
+    min-width: 0px;
+  }
   
   #as-titlebar-mode {
     display: block;

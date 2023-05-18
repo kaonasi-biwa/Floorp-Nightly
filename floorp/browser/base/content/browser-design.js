@@ -27,9 +27,6 @@ function setBrowserDesign() {
     //ProtonUI 
     case 1:
       break;
-    case 2:
-      Tag.innerText = ThemeCSS.ProtonfixUI;
-      break;
     case 3:
       Tag.innerText = Services.prefs.getBoolPref("floorp.enable.multitab", false) ? ThemeCSS.LeptonUIMultitab : ThemeCSS.LeptonUI;
       break;

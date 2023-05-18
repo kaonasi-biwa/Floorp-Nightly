@@ -398,10 +398,6 @@ browser.jar:
   skin/classic/browser/fluentUI/sidebars.svg                         (designs/fluentUI/sidebars.svg)
   skin/classic/browser/fluentUI/fluentUI.css                         (designs/fluentUI/fluentUI.css)
 
-# protonfix
-  skin/classic/browser/protonfix/protonfix.css                (designs/protonfix/protonfix.css)
-  skin/classic/browser/protonfix/proton-fix.svg               (designs/protonfix/proton-fix.svg)
-
 # Floorp Legacy by materialfox
   skin/classic/browser/floorplegacy/floorplegacy.css           (designs/floorp-legacy/floorplegacy.css)
   skin/classic/browser/floorplegacy/material.svg               (designs/floorp-legacy/material.svg)

@@ -339,6 +339,9 @@ photon-mode =
 lepton-mode = 
     .label = Lepton Mode
 
+protonfix-mode =
+    .label = Protonfix Mode
+
 autohide-preference = Auto hide elements
 
 floorp-lepton-enable-tab-autohide =
