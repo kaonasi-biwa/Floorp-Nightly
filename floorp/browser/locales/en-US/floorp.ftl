@@ -767,6 +767,8 @@ workspace-context-menu-selected-tab =
  .label = Selected tab cannot be moved
 move-tab-another-workspace =
  .label = Move to another workspace
+workspace-rename = 
+  .label = Change workspace name
 
 ######################################################################### menubar item ###############################################################
 

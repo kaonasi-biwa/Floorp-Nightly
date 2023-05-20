@@ -43,7 +43,6 @@ function initWorkspace() {
   addLastShowedWorkspaceTab();
 
   //add keybooard shortcut
-
   let keyElem = document.createElement("key");
   keyElem.setAttribute("id", "floorp-workspace-key");
   keyElem.setAttribute("keycode", "VK_F9");
@@ -51,6 +50,7 @@ function initWorkspace() {
   document.getElementById("mainKeyset").appendChild(keyElem);
 
   saveWorkspaceState();
+  setMenuItemCheckCSS();
 }
 
 function changeWorkspaceToNext() {
@@ -86,7 +86,7 @@ function deleteworkspace(workspace) {
     }
   }
   //delete workspace menuitem
-  let menuitem = document.querySelector(`#workspace-${workspace}`);
+  let menuitem = document.getElementById(`workspace-box-${workspace}`);
   menuitem.remove();
  }
 }
@@ -139,16 +139,25 @@ function saveWorkspaceState() {
   Services.prefs.setStringPref(WORKSPACE_TABS_PREF, JSON.stringify(tabStateObject));
 }
 
-function addWorkspaceElemToMenu(label) {
+function addWorkspaceElemToMenu(label, nextElem) {
   let workspaceItemElem = window.MozXULElement.parseXULToFragment(`
-  <hbox id='workspace-${label}' class="workspace-item-box">
-    <toolbarbutton id="workspace-label" label="${label}" 
-              class="toolbarbutton-1 workspace-item" workspace="${label}"
-              oncommand="changeWorkspace('${label}')"/>
-  </hbox>
-  `);
-  document.getElementById("workspace-menu-separator").before(workspaceItemElem);
 
+  <vbox id="workspace-box-${label}" class="workspace-label-box">
+   <hbox id="workspace-${label}" class="workspace-item-box">
+     <toolbarbutton id="workspace-label" label="${label}"
+               class="toolbarbutton-1 workspace-item" workspace="${label}"
+               context="workspace-item-context" oncommand="changeWorkspace('${label}')"/>
+   </hbox>
+   <menuseparator class="workspace-item-separator"/>
+  </vbox>
+  `);
+
+  if (nextElem) {
+    nextElem.before(workspaceItemElem);
+  } else {
+    document.getElementById("addNewWorkspaceButton").before(workspaceItemElem);
+  }
+  
   if (label !== defaultWorkspaceName) {
     let deleteButtonElem = window.MozXULElement.parseXULToFragment(`
         <toolbarbutton id="workspace-delete" class="workspace-item-delete toolbarbutton-1"
@@ -235,6 +244,63 @@ function addNewWorkspace() {
   }
 }
 
+function createWorkspacemenuItemContext(e) {
+  //remove old menuitem
+  let oldMenuItems = document.querySelectorAll(".workspace-item-contexts");
+  for (let i = 0; i < oldMenuItems.length; i++) {
+    oldMenuItems[i].remove();
+  }
+
+  let menuitemElem = window.MozXULElement.parseXULToFragment(`
+  <menuitem class="workspace-item-contexts" id="workspace-item-context-rename" data-l10n-id="workspace-rename" oncommand="renameWorkspace('${e.explicitOriginalTarget.getAttribute("label")}')"/>
+  `);
+  document.getElementById("workspace-item-context").appendChild(menuitemElem);
+}
+
+function renameWorkspace(label) {
+  let prompts = Services.prompt;
+  let l10n = new Localization(["browser/floorp.ftl"], true);
+  let check = {value: false};
+  let pattern = /^[\p{L}\p{N}]+$/u;
+  let input = {value: ""};
+  let result = prompts.prompt(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("please-enter-workspace-name") + "\n" + l10n.formatValueSync("please-enter-workspace-name-2"), input, null, check);
+
+  if (result && input.value != "" && input.value.length < 20 && input.value != l10n.formatValueSync("workspace-default") && pattern.test(input.value)) {
+    let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+    let index = workspaceAll.indexOf(label);
+    workspaceAll[index] = input.value;
+    Services.prefs.setStringPref(WORKSPACE_ALL_PREF, workspaceAll);
+
+    //Tabs
+    let tabs = gBrowser.tabs;
+    for (let i = 0; i < tabs.length; i++) {
+      let tab = tabs[i];
+      if (tab.getAttribute("floorp-workspace") == label) {
+        tab.setAttribute("floorp-workspace", input.value);
+      }
+    }
+    saveWorkspaceState();
+
+    //lastShowWorkspaceTab
+    document.querySelector(`[lastShowWorkspaceTab-${label}]`)?.setAttribute(`lastShowWorkspaceTab-${input.value}`, "true");
+
+    //menuitem
+    let menuitem = document.querySelector(`#workspace-box-${label}`);
+    let nextAfterMenuitem = menuitem.nextSibling;
+
+    menuitem.remove();
+    addWorkspaceElemToMenu(input.value, nextAfterMenuitem);
+
+    let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+
+    if (currentWorkspace == label) {
+      Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, input.value);
+    }
+  } else if(result == false){
+    return;
+  }
+}
+
 // tab context menu (move tab to other workspace)
 function addContextMenuToTabContext() {
   let beforeElem = document.getElementById("context_moveTabOptions")
@@ -309,6 +375,20 @@ function addLastShowedWorkspaceTab(){
     currentTab.setAttribute(`lastShowWorkspaceTab-${currentWorkspace}`,"true")
 }
 
+function setMenuItemCheckCSS() {
+  let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+  document.getElementById("workspaceMenuItemCheckCSS")?.remove();
+  
+  let Tag = document.createElement("style");
+  Tag.innerText = `
+    .workspace-item[workspace="${currentWorkspace}"] > .toolbarbutton-icon {
+      visibility: inherit !important;
+    }
+  `;
+  Tag.setAttribute("id", "workspaceMenuItemCheckCSS");
+  document.head.appendChild(Tag);
+}
+
 function handleTabOpen() {
   let tabs = gBrowser.tabs;
   let lastTab = null;
@@ -358,6 +438,7 @@ function handleTabMove() {
 
 function handleWorkspacePrefChange() {
   setCurrentWorkspace();
+  setMenuItemCheckCSS()
 }
 
 function handleTabSelect() {
@@ -421,9 +502,8 @@ window.setTimeout(function(){
                     type="menu"
                     style="list-style-image: url('chrome://browser/skin/workspace-floorp.png');">
       <menupopup id="workspace-menu" context="workspace-menu-context">
-         <menuseparator id="workspace-menu-separator"/>
-         <toolbarbutton style="list-style-image: url('chrome://global/skin/icons/plus.svg');"
-                        data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="addNewWorkspace()"/>
+        <toolbarbutton style="list-style-image: url('chrome://global/skin/icons/plus.svg');"
+                id="addNewWorkspaceButton"        data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="addNewWorkspace()"/>
       </menupopup>
     </toolbarbutton>
     `

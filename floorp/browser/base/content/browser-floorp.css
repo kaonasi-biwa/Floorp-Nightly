@@ -401,21 +401,70 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
   border-radius: var(--tab-border-radius);
 }
 
-#workspace-label {
-  width: 75%;
+#workspace-menu {
+  width: 200px;
 }
 
-#workspace-label > .toolbarbutton-icon {
-  display: none;
-}
-
-#workspace-label > .toolbarbutton-text {
+.workspace-item > .toolbarbutton-icon {
+  height: 35px !important;
+  width: 35px !important;
   display: block;
-  text-align: start;
+  visibility: hidden;
+  background: none !important;
+}
+
+.workspace-item > .toolbarbutton-text {
+  display: block;
+  text-align: justify;
+  font-size: larger;
+  font-weight: bold !important;
+  background: none !important;
 }
 
 #workspace-delete {
   width: 20%;
+}
+
+.workspace-item {
+  border-radius: 5px;
+  list-style-image: url("chrome://global/skin/icons/menu-check.svg");
+}
+
+.workspace-item-box {
+  margin: 5px;
+}
+
+.workspace-item:hover {
+  background: var(--toolbarbutton-hover-background);
+}
+
+.workspace-item:hover:active {
+  background: var(--toolbarbutton-active-background);
+}
+
+.workspace-item > .toolbarbutton-text:hover{
+  background: none !important;
+  background-color: unset !important;
+}
+
+
+.workspace-item-box > .toolbarbutton-text {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.workspace-item {
+  width: 80%;
+  min-height: 35px;
+}
+
+#addNewWorkspaceButton {
+  height: 30px !important;
+  margin: 5px;
+}
+
+#addNewWorkspaceButton > .toolbarbutton-text {
+  font-size: larger;
 }
 
 #workspace-delete > .toolbarbutton-icon {
