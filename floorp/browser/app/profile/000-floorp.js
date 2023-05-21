@@ -34,10 +34,6 @@ pref("floorp.general.useragent.override", "");
 pref("floorp.chrome.theme.mode", -1);
 
 //ブラウザーUIのカスタマイズ設定
-pref("floorp.hide.tabbrowser-tab.enable", false); //水平タブ削除
-pref("floorp.optimized.verticaltab", false); //ツリー型垂直タブ等に最適化。8.7.2 からフォーカスした際の動作は別に
-pref("floorp.horizontal.tab.position.shift", false); //水平タブ位置移動
-pref("floorp.Tree-type.verticaltab.optimization", false); //ツリー型タブのフォーカスした際の挙動を変更
 pref("floorp.bookmarks.bar.focus.mode", false);//フォーカスした際にブックマークバーを展開
 pref("floorp.material.effect.enable", false);//マテリアルモードの実装
 pref("floorp.disable.fullscreen.notification", false);//フルスクリーン通知を無効化
@@ -65,14 +61,6 @@ pref("floorp.dualtheme.theme", "[]"); //デュアルテーマのリスト
 
 pref("floorp.download.notification", 4); //ダウンロード通知
 
-pref("contentblocking.cryptomining_blocking_enabled", true);
-pref("contentblocking.cryptomining_blocking_enabled",true);
-pref("contentblocking.category", true);
-pref("privacy.trackingprotection.enabled", true);
-pref("network.cookie.cookieBehavior", 5); 
-pref("privacy.partition.serviceWorkers", true);
-pref("privacy.restrict3rdpartystorage.rollout.preferences.TCPToggleInStandard", true);
-pref("privacy.restrict3rdpartystorage.rollout.enabledByDefault", true);
 
 //新しいタブの検索を「ウェブを検索」に変更
 pref("browser.newtabpage.activity-stream.improvesearch.handoffToAwesomebar", false);

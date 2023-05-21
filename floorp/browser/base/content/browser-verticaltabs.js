@@ -51,6 +51,10 @@ function setVerticalTabs() {
      Tag.setAttribute("id", "floorp-vthover");
      document.head.appendChild(Tag);
     }
+    //add context menu
+    let target = document.getElementById("TabsToolbar-customization-target");
+    target.setAttribute("context", "toolbar-context-menu");
+
   } else {
     document.querySelector("#verticalTabsStyle")?.remove()
     let verticalTabs = document.querySelector("#toolbar-items-verticaltabs")
@@ -84,6 +88,10 @@ function setVerticalTabs() {
       document.querySelector(".toolbar-items").before(workspaceButton);
 
       document.getElementById("floorp-vthover")?.remove();
+
+      //remove context menu
+      let target = document.getElementById("TabsToolbar-customization-target");
+      target.removeAttribute("context");
     }
   }
 
