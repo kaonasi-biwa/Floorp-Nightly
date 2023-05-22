@@ -30,14 +30,24 @@ function setVerticalTabs() {
       }
     }, 500);
 
-    window.setTimeout(function () {
+    function checkBrowserIsStartup () {
       let list = Services.wm.getEnumerator("navigator:browser");
       while (list.hasMoreElements()) { if (list.getNext() != window) return; }
+
+      if(!gBrowser){
+        window.setTimeout(setWorkspaceLabel, 2000);
+      } else {
+        setWorkspaceLabel();
+      }
+    }
+    checkBrowserIsStartup();
+
+    function setWorkspaceLabel() {
       //move workspace button
       let workspaceButton = document.getElementById("workspace-button");
       let customizeTarget = document.getElementById("nav-bar-customization-target");
       customizeTarget.before(workspaceButton);
-    }, 500);
+    }
 
     //toolbar modification
     var Tag = document.createElement("style");
