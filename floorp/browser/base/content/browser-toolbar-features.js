@@ -117,8 +117,8 @@ function setNowTime() {
   });
   let timeString = timeFormat.format(now);
   let clock = document.getElementById("toolbarItemClock");
-  clock.setAttribute("label", checkBrowserLangForLabel() + " " + timeString);
-  clock.setAttribute("tooltiptext", checkBrowserLangForToolTipText() + " " + timeString);
+  clock?.setAttribute("label", checkBrowserLangForLabel() + " " + timeString);
+  clock?.setAttribute("tooltiptext", checkBrowserLangForToolTipText() + " " + timeString);
 }
 
 if(Services.prefs.getBoolPref("floorp.browser.clock.enabled")) {
