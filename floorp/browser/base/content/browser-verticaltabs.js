@@ -37,7 +37,7 @@ function setVerticalTabs() {
       let workspaceButton = document.getElementById("workspace-button");
       let customizeTarget = document.getElementById("nav-bar-customization-target");
       customizeTarget.before(workspaceButton);
-    }, 2000);
+    }, 500);
 
     //toolbar modification
     var Tag = document.createElement("style");
