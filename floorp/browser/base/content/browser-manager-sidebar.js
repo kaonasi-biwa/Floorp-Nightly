@@ -143,8 +143,10 @@
              },
              muteWebpanel:()=>{
                  if (contextWebpanel.audioMuted) {
-                     contextWebpanel.unmute();
+                    document.getElementById(clickedWebpanel).removeAttribute("muted"); 
+                    contextWebpanel.unmute();
                  } else {
+                    document.getElementById(clickedWebpanel).setAttribute("muted", "true");
                     contextWebpanel.mute();
                  }
              }
