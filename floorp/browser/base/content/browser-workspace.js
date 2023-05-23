@@ -482,7 +482,7 @@ const workspaceFunctions = {
         let workspace = workspaceAll[i]
         let menuItem = window.MozXULElement.parseXULToFragment(`
           <menuitem id="workspaceID-${workspace}" class="workspaceContextMenuItems"
-                    label="${workspace}"  oncommand="moveTabToOtherWorkspace(TabContextMenu.contextTab, '${workspace}');"/>
+                    label="${workspace}"  oncommand="workspaceFunctions.tabFunctions.moveTabToOtherWorkspace(TabContextMenu.contextTab, '${workspace}');"/>
         `)
         let parentElem = document.getElementById("workspaceTabContextMenu");
         if(workspace != TabContextMenu.contextTab.getAttribute("floorp-workspace")){
