@@ -111,6 +111,23 @@ const workspaceFunctions = {
           tabs[i].setAttribute("floorp-workspace", workspace);
         }
       }
+
+      const toolbarButtonEle = window.MozXULElement.parseXULToFragment(`
+        <toolbarbutton id="workspace-button"
+                        class="toolbarbutton-1 chromeclass-toolbar-additional"
+                        label="Workspace"
+                        tooltiptext="Workspace"
+                        type="menu"
+                        style="list-style-image: url('chrome://browser/skin/workspace-floorp.png');">
+          <menupopup id="workspace-menu" context="workspace-menu-context">
+            <toolbarbutton style="list-style-image: url('chrome://global/skin/icons/plus.svg');"
+                    id="addNewWorkspaceButton"        data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="workspaceFunctions.manageWorkspaceFunctions.addNewWorkspace();"/>
+          </menupopup>
+        </toolbarbutton>
+      `);
+      
+      document.querySelector(".toolbar-items").before(toolbarButtonEle);
+      if(!Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) document.querySelector("#workspace-button").style.display = "none";
     
       // Add workspace menu from preference
       let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
@@ -192,6 +209,7 @@ const workspaceFunctions = {
     },
 
     renameWorkspace(label) {
+      if (label == defaultWorkspaceName) return;
       let prompts = Services.prompt;
       let l10n = new Localization(["browser/floorp.ftl"], true);
       let check = {value: false};
@@ -232,6 +250,8 @@ const workspaceFunctions = {
         }
       } else if(result == false){
         return;
+      } else {
+        prompts.alert(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("workspace-error") + "\n" + l10n.formatValueSync("workspace-error-discription"));
       }
     },
 
@@ -495,23 +515,26 @@ const workspaceFunctions = {
       if (label !== defaultWorkspaceName) {
         let deleteButtonElem = window.MozXULElement.parseXULToFragment(`
             <toolbarbutton id="workspace-delete" class="workspace-item-delete toolbarbutton-1"
-                           oncommand="deleteworkspace('${label}')"/>
+                           oncommand="workspaceFunctions.manageWorkspaceFunctions.deleteworkspace('${label}')"/>
         `);
         document.getElementById(`workspace-${label}`).appendChild(deleteButtonElem);
       }
     },
 
     createWorkspacemenuItemContext(e) {
-      //remove old menuitem
       let oldMenuItems = document.querySelectorAll(".workspace-item-contexts");
+
       for (let i = 0; i < oldMenuItems.length; i++) {
         oldMenuItems[i].remove();
       }
     
       let menuitemElem = window.MozXULElement.parseXULToFragment(`
-      <menuitem class="workspace-item-contexts" id="workspace-item-context-rename" data-l10n-id="workspace-rename" oncommand="renameWorkspace('${e.explicitOriginalTarget.getAttribute("label")}')"/>
+      <menuitem class="workspace-item-contexts" id="workspace-item-context-rename" data-l10n-id="workspace-rename" oncommand="workspaceFunctions.manageWorkspaceFunctions.renameWorkspace('${e.explicitOriginalTarget.getAttribute("label")}')"/>
       `);
-      document.getElementById("workspace-item-context").appendChild(menuitemElem);
+
+      if (e.explicitOriginalTarget.getAttribute("label") !== defaultWorkspaceName) {
+        document.getElementById("workspace-item-context").appendChild(menuitemElem);
+      }
     },
 
     setMenuItemCheckCSS() {
@@ -533,24 +556,6 @@ const workspaceFunctions = {
 window.setTimeout(function(){
   let list = Services.wm.getEnumerator("navigator:browser");
   while (list.hasMoreElements()) { if (list.getNext() != window) return; }
-  
-  const toolbarButtonEle = window.MozXULElement.parseXULToFragment(
-    `
-    <toolbarbutton id="workspace-button"
-                    class="toolbarbutton-1 chromeclass-toolbar-additional"
-                    label="Workspace"
-                    tooltiptext="Workspace"
-                    type="menu"
-                    style="list-style-image: url('chrome://browser/skin/workspace-floorp.png');">
-      <menupopup id="workspace-menu" context="workspace-menu-context">
-        <toolbarbutton style="list-style-image: url('chrome://global/skin/icons/plus.svg');"
-                id="addNewWorkspaceButton"        data-l10n-id="workspace-add" class="subviewbutton subviewbutton-nav" oncommand="workspaceFunctions.manageWorkspaceFunctions.addNewWorkspace();"/>
-      </menupopup>
-    </toolbarbutton>
-    `
-  );
-  document.querySelector(".toolbar-items").before(toolbarButtonEle);
-  if(!Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) document.querySelector("#workspace-button").style.display = "none"
 
   //run codes
   workspaceFunctions.manageWorkspaceFunctions.initWorkspace();

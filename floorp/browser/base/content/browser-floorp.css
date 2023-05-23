@@ -402,7 +402,8 @@ toolbar #workspace-button:not([disabled="true"], [checked], [open], :active):hov
 }
 
 #workspace-menu {
-  width: 200px;
+  width: 250px;
+  margin-left: 5px;
 }
 
 .workspace-item > .toolbarbutton-icon {
