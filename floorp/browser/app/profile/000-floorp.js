@@ -208,7 +208,7 @@ pref("breakpad.reportURL", "", locked);
 pref("browser.tabs.crashReporting.sendReport", false);
 pref("browser.crashReports.unsubmittedCheck.enabled",	false);
 
-//野良アドオンのインストールを許可。開発者向け。Floorp アドオンストアの準備。
+//野良アドオンのインストールを許可。
 pref("xpinstall.signatures.required", false);
 
 // Firefox による、Mozilla へのテレメトリー送信を無効化
@@ -256,9 +256,6 @@ pref("media.peerconnection.enabled", true);
 pref("media.peerconnection.ice.default_address_only", true);
 pref("media.peerconnection.ice.no_host", true);
 
-//アドオンのフィンガープリント採取から保護
-pref("privacy.resistFingerprinting.block_mozAddonManager", true);
-
 //プライバシー機能をオンにし、テレメトリー採取を無効化します。
 pref("privacy.trackingprotection.origin_telemetry.enabled", false, locked);
 pref("privacy.userContext.enabled", true);
@@ -269,9 +266,6 @@ pref("extensions.webcompat-reporter.enabled", false);
 pref("browser.startup.page", 3);//自動復元
 pref("browser.tabs.closeWindowWithLastTab", false);//最後のタブを閉じてもブラウザが閉じないように]
 pref("general.config.obscure_value", 0);
-
-//font
-pref("font.blacklist.underline_offset", "FangSong,Gulim,GulimChe,MingLiU,MingLiU-ExtB,MingLiU_HKSCS,MingLiU-HKSCS-ExtB,MS Gothic,MS Mincho,MS PGothic,MS PMincho,MS UI Gothic,PMingLiU,PMingLiU-ExtB,SimHei,SimSun,SimSun-ExtB,Hei,Kai,Apple LiGothic,Apple LiSung,Osaka,Meiryo");
 
 // https://developer.mozilla.org/docs/Web/API/Navigator/share
 #ifdef XP_WIN
