@@ -107,6 +107,7 @@
                     }
                  }
                  contextWebpanel.remove();
+                 bmsController.eventFunctions.contextMenu.setMuteIcon();
              },
              unloadWebpanelWithId:(id)=>{
                     let sidebarsplit2 = document.getElementById("sidebar-splitter2");
@@ -143,13 +144,19 @@
              },
              muteWebpanel:()=>{
                  if (contextWebpanel.audioMuted) {
-                    document.getElementById(clickedWebpanel).removeAttribute("muted"); 
                     contextWebpanel.unmute();
                  } else {
-                    document.getElementById(clickedWebpanel).setAttribute("muted", "true");
                     contextWebpanel.mute();
                  }
-             }
+                 bmsController.eventFunctions.contextMenu.setMuteIcon();
+             },
+             setMuteIcon:()=>{
+                    if (contextWebpanel.audioMuted) {
+                        document.getElementById(clickedWebpanel).setAttribute("muted", "true");
+                    } else {
+                        document.getElementById(clickedWebpanel).removeAttribute("muted");
+                    }
+                }
          }
      },
      controllFunctions:{
