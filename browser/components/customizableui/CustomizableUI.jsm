@@ -819,8 +819,7 @@ var CustomizableUIInternal = {
     }
 
     if (
-      !aElement._customizationTarget &&
-      aElement.hasAttribute("customizable")
+      !aElement._customizationTarget //&& aElement.hasAttribute("customizable");
     ) {
       let id = aElement.getAttribute("customizationtarget");
       if (id) {
