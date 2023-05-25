@@ -37,13 +37,13 @@ const workspaceFunctions = {
       },
 
       handleTabClose() {
-        workspaceFunctions.manageWorkspaceFunctions.saveWorkspaceState();
         window.setTimeout(() => {
           document.querySelector(`[floorp-firstVisibleTab]`)?.removeAttribute("floorp-firstVisibleTab");
           document.querySelector(`[floorp-lastVisibleTab]`)?.removeAttribute("floorp-lastVisibleTab");
           document.querySelector(`tab:not([hidden])`).setAttribute("floorp-firstVisibleTab", "true");
           let elems = document.querySelectorAll(`tab:not([hidden])`);
           elems[elems.length - 1].setAttribute("floorp-lastVisibleTab", "true");
+          workspaceFunctions.manageWorkspaceFunctions.saveWorkspaceState();
         }, 400);
       },
 
