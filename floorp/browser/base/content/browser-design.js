@@ -12,7 +12,7 @@ function setBrowserDesign() {
   let updateNumber = (new Date()).getTime();
   const ThemeCSS = {
     ProtonfixUI: `@import url(chrome://browser/skin/protonfix/protonfix.css?${updateNumber});`,
-    LeptonUI: `@import url(chrome://browser/skin/lepton/userChrome.css?${updateNumber});`,
+    LeptonUI: `@import url(chrome://browser/skin/lepton/leptonChrome.css?${updateNumber}); @import url(chrome://browser/skin/lepton/leptonContent.css?${updateNumber});`,
     LeptonUIMultitab: `@import url(chrome://browser/skin/lepton/photonChrome-multitab.css?${updateNumber});
                        @import url(chrome://browser/skin/lepton/photonContent-multitab.css?${updateNumber});`,
     fluentUI: `@import url(chrome://browser/skin/fluentUI/fluentUI.css);`,
