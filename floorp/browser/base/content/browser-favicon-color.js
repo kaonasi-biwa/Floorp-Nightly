@@ -94,7 +94,7 @@ function extractColorsFromBase64Image(base64Image) {
     return parseInt(mostFrequentValue);
   }
   
-  function setVivaldiFloorp() {
+  function setFaviconColorToTitlebar() {
     const base64Image = document.querySelector('.tab-icon-image[selected="true"]')?.src;
     const base64ImageWithoutHeader = base64Image?.split(',')[1];
     extractColorsFromBase64Image(base64ImageWithoutHeader)
@@ -121,11 +121,13 @@ function extractColorsFromBase64Image(base64Image) {
         }
       });
   }
-  
+
+if(Services.prefs.getBoolPref("floorp.titlebar.favicon.color", true)) {
   window.setTimeout(function(){
-    gBrowser.tabContainer.addEventListener("TabSelect", setVivaldiFloorp, false);
-    gBrowser.tabContainer.addEventListener("TabMove", setVivaldiFloorp, false);
-    gBrowser.tabContainer.addEventListener("TabAttrModified", setVivaldiFloorp, false);
-    gBrowser.tabContainer.addEventListener("TabClose", setVivaldiFloorp, false);
-    gBrowser.tabContainer.addEventListener("TabOpen", setVivaldiFloorp, false);
+    gBrowser.tabContainer.addEventListener("TabSelect", setFaviconColorToTitlebar, false);
+    gBrowser.tabContainer.addEventListener("TabMove", setFaviconColorToTitlebar, false);
+    gBrowser.tabContainer.addEventListener("TabAttrModified", setFaviconColorToTitlebar, false);
+    gBrowser.tabContainer.addEventListener("TabClose", setFaviconColorToTitlebar, false);
+    gBrowser.tabContainer.addEventListener("TabOpen", setFaviconColorToTitlebar, false);
   } , 1000);
+}
