@@ -17,6 +17,7 @@ Services.scriptloader.loadSubScript("chrome://browser/content/browser-rest-mode.
 document.addEventListener("DOMContentLoaded", () => {
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-context-menu.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-downloadbar.js", this);
+    Services.scriptloader.loadSubScript("chrome://browser/content/browser-favicon-color.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-UI-custom.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-manager-sidebar.js", this);
     Services.scriptloader.loadSubScript("chrome://browser/content/browser-toolbar-features.js", this);
