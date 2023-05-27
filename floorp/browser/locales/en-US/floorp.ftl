@@ -67,6 +67,9 @@ move-tabbar-position =
 tabbar-on-bottom =
  .label = Display tabbar at the bottom of the window
 
+tabbar-favicon-color =
+ .label = Use favicon color for tabbar background color
+
 tabbar-style-preference = Tabbar Style
 
 horizontal-tabbar =

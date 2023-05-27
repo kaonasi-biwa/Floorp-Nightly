@@ -135,9 +135,14 @@ pref("floorp.browser.workspace.current", "");
 pref("floorp.browser.workspace.all", "");
 pref("floorp.browser.workspace.tab.enabled",true);
 
+//タブバーの背景色
+pref("floorp.titlebar.favicon.color", false);
+
+
+/*----------------------------------------------------------------------------------------------------------------------------------*/
+
 //ブックマークツールバー
 pref("browser.toolbars.bookmarks.visibility", "always");
-/*----------------------------------------------------------------------------------------------------------------------------------*/
 
 //検索エンジン
 pref("browser.search.separatePrivateDefault", true);
