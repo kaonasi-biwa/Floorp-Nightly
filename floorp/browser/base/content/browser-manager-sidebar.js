@@ -262,7 +262,7 @@
                   tooltip="aHTMLTooltip"
                   autoscroll="false"
                   disableglobalhistory="true"
-                  messagemanagergroup="browsers"
+                  messagemanagergroup="${webpanelURL.slice(0, 9) == "extension" ? "browsers" : "webext-browsers"}"
                   autocompletepopup="PopupAutoComplete"
                   ${isWeb?`
                   usercontextid="${(typeof wibpanel_usercontext) == "number"?String(wibpanel_usercontext) : "0"}"
@@ -279,9 +279,18 @@
                   }
                    />
                 `)
+           if(webpanelURL.slice(0, 9) == "extension") {
+            webpanelURL = webpanelURL.split(",")[3]
+           }
+
           webpanelElem.firstChild.setAttribute("src", webpanelURL);
           document.getElementById("sidebar2-box").appendChild(webpanelElem);
         } else {
+
+          if(webpanelURL.slice(0, 9) == "extension") {
+            webpanelURL = webpanelURL.split(",")[3]
+          }
+
           webpanobject.setAttribute("src", webpanelURL);
         }
         bmsController.controllFunctions.visiblePanelBrowserElem()
@@ -305,6 +314,18 @@
               sidebarItem.classList.add("webpanel-icon");
               sidebarItem.setAttribute("context", "webpanel-context");
             }
+
+            if (BROWSER_SIDEBAR_DATA.data[elem]["url"].slice(0, 9) == "extension") {
+              let extension_icon_url = BROWSER_SIDEBAR_DATA.data[elem]["url"].split(",")[4]
+              sidebarItem.style.listStyleImage = `url(${extension_icon_url})`
+              sidebarItem.className += " extension-icon"
+            }
+
+            // 全部アイコンのせいですわかりませんでした死にます。
+            if (BROWSER_SIDEBAR_DATA.data[elem]["url"].split(",")[2] == "treestyletab@piro.sakura.ne.jp") {
+              sidebarItem.setAttribute("TST-panel", "true");
+            }
+
             sidebarItem.onmouseover = bmsController.eventFunctions.sidebarItemMouse.mouseOver
             sidebarItem.onmouseout = bmsController.eventFunctions.sidebarItemMouse.mouseOut
             sidebarItem.ondragstart = bmsController.eventFunctions.sidebarItemMouse.dragStart

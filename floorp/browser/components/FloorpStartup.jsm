@@ -173,6 +173,13 @@ if (isMainBrowser) {
         );
 }
 
+// delete BMS's sidebar extension panel preference
+{
+    let pref = "floorp.extensions.webextensions.sidebar-action";
+    if (Services.prefs.prefHasUserValue(pref)) {
+        Services.prefs.clearUserPref(pref);
+    }
+}
 
 if (isMainBrowser) {
     // Load actors

@@ -80,6 +80,7 @@ pref("floorp.browser.sidebar.enable", true);// サイドバーを表示
 
 // url:URL width:幅 userAgent:userAgent usercontext:コンテナタブ
 pref("floorp.browser.sidebar2.data", '{"data":{},"index":[]}');
+pref("floorp.extensions.webextensions.sidebar-action", '{"data":{}}');
 
 pref("floorp.browser.sidebar2.global.webpanel.width", 400);
 
@@ -115,9 +116,6 @@ pref("floorp.browser.note.enabled", false);
 
 //Clock
 pref("floorp.browser.clock.enabled", true);
-
-//BMS Search
-pref("browser.search.useDefault.enabled", false);
 
 //新規タブの開く位置
 pref("floorp.browser.tabs.openNewTabPosition", -1);

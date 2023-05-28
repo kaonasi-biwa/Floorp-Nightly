@@ -66,11 +66,16 @@ var gBSBPane = {
   setURL(elemUrl, elem) {
     if(elemUrl.startsWith("floorp//")){
       elem.setAttribute("data-l10n-id", "sidebar2-" +  BrowserManagerSidebar.STATIC_SIDEBAR_DATA[elemUrl].l10n);
-    }else{
+    }
+    else if(elemUrl.startsWith("extension")){
+      elem.removeAttribute("data-l10n-id");
+      elem.textContent = elemUrl.split(",")[1]
+    }
+    else{
       elem.removeAttribute("data-l10n-id");
       elem.textContent = elemUrl
     }
-    
+
   },
 
   panelSet() {
