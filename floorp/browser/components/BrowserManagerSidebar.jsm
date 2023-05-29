@@ -84,7 +84,7 @@ let BrowserManagerSidebar = {
           } catch (e) {
             elem.style.removeProperty("--BMSIcon");
           }
-        
+
           if(sbar_url.startsWith("http://") || sbar_url.startsWith("https://")) {
         
             let iconProvider = Services.prefs.getStringPref("floorp.browser.sidebar.useIconProvider", null);
@@ -163,6 +163,9 @@ let BrowserManagerSidebar = {
               });
           } else if (sbar_url.startsWith("file://")) {
             elem.style.setProperty("--BMSIcon",`url(moz-icon:${sbar_url}?size=128)`)
+          } else if(sbar_url.startsWith("extension")){
+            let iconURL =  sbar_url.split(",")[4];
+            elem.style.setProperty("--BMSIcon",`url(${iconURL})`)
           }
     },
     getAdoonSidebarPage:async function(addonId){

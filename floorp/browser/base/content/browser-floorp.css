@@ -54,6 +54,10 @@
   margin-inline: 0 auto !important;
 }
 
+[TST-panel="true"] > .toolbarbutton-icon {
+  background: white;
+}
+
 #sidebar-select-box {
   background: var(--toolbar-bgcolor);
   background-image: var(--lwt-additional-images);
