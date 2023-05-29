@@ -52,6 +52,12 @@ function onLoad() {
   let url = params.url ?? (newPanel ? "" : (bsbObject.data[params.id].url))
   if(url in BrowserManagerSidebar.STATIC_SIDEBAR_DATA){
     document.querySelector("#pageSelect").value = url
+  }
+  else if(url.startsWith("extension,")){
+    let haveSidebarPanelExtensionsObjPref = "floorp.extensions.webextensions.sidebar-action";
+    let extensionObj = JSON.parse(Services.prefs.getStringPref(haveSidebarPanelExtensionsObjPref));
+    document.querySelector("#pageSelect").value = url
+    document.querySelector("#pageSelect").setAttribute("label", extensionObj.data[url.split(",")[2]].title)
   }else{
     document.querySelector(".URLBox").value = url
   }
@@ -100,7 +106,7 @@ function onLoad() {
         let menuitem = document.createXULElement("menuitem");
         menuitem.value = extensionID
         menuitem.setAttribute("flex", 1);
-        menuitem.setAttribute("label", `${addon.name} (${extensionObj.data[addon.id].title})`);
+        menuitem.setAttribute("label", extensionObj.data[addon.id].title);
         menuitem.setAttribute("value", `extension,${extensionObj.data[addon.id].title},${extensionID},${extensionObj.data[addon.id].panel},${extensionObj.data[addon.id].icon}`);
         document.querySelector("#pageSelect > menupopup").appendChild(menuitem)
       }

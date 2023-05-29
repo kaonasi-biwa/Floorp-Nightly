@@ -166,7 +166,7 @@
         bmsController.controllFunctions.changeVisibleCommandButton(selectedURL.startsWith("floorp//"))
         for (let elem of document.getElementsByClassName("webpanels")) {
           elem.hidden = true;
-          if (elem.classList.contains("isFloorp")) {
+          if (elem.classList.contains("isFloorp") || elem.classList.contains("isExtension")) {
             let src = elem.getAttribute("src");
             elem.setAttribute("src", "");
             elem.setAttribute("src", src);
@@ -254,7 +254,7 @@
           let webpanelElem = window.MozXULElement.parseXULToFragment(`
                 <browser 
                   id="webpanel${webpanel_id}"
-                  class="webpanels${isFloorp?" isFloorp" : (isTST?" isTST" : " isWeb")}"
+                  class="webpanels${isFloorp?" isFloorp" : (isTST?" isTST" : " isWeb")} ${webpanelURL.slice(0, 9) == "extension" ? " isExtension" : ""}"
                   flex="1"
                   xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
                   disablehistory="true"
@@ -262,7 +262,7 @@
                   tooltip="aHTMLTooltip"
                   autoscroll="false"
                   disableglobalhistory="true"
-                  messagemanagergroup="${webpanelURL.slice(0, 9) == "extension" ? "browsers" : "webext-browsers"}"
+                  messagemanagergroup="${webpanelURL.slice(0, 9) == "extension" ? "webext-browsers" : "browsers"}"
                   autocompletepopup="PopupAutoComplete"
                   ${isWeb?`
                   usercontextid="${(typeof wibpanel_usercontext) == "number"?String(wibpanel_usercontext) : "0"}"
@@ -317,8 +317,9 @@
 
             if (BROWSER_SIDEBAR_DATA.data[elem]["url"].slice(0, 9) == "extension") {
               let extension_icon_url = BROWSER_SIDEBAR_DATA.data[elem]["url"].split(",")[4]
-              sidebarItem.style.listStyleImage = `url(${extension_icon_url})`
               sidebarItem.className += " extension-icon"
+            } else {
+              sidebarItem.style.listStyleImage = "";
             }
 
             // 全部アイコンのせいですわかりませんでした死にます。

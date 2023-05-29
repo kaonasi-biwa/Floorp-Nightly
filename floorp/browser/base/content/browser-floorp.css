@@ -55,7 +55,7 @@
 }
 
 [TST-panel="true"] > .toolbarbutton-icon {
-  background: var(--toolbarbutton-icon-fill)
+  background: white;
 }
 
 #sidebar-select-box {
