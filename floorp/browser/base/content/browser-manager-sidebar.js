@@ -316,15 +316,27 @@
             }
 
             if (BROWSER_SIDEBAR_DATA.data[elem]["url"].slice(0, 9) == "extension") {
-              let extension_icon_url = BROWSER_SIDEBAR_DATA.data[elem]["url"].split(",")[4]
               sidebarItem.className += " extension-icon"
             } else {
               sidebarItem.style.listStyleImage = "";
             }
 
-            // 全部アイコンのせいですわかりませんでした死にます。
-            if (BROWSER_SIDEBAR_DATA.data[elem]["url"].split(",")[2] == "treestyletab@piro.sakura.ne.jp") {
-              sidebarItem.setAttribute("TST-panel", "true");
+            if (BROWSER_SIDEBAR_DATA.data[elem]["url"].slice(0, 9) == "extension") {
+              sidebarItem.className += " extension-icon"
+              let listTexts = "chrome://browser/content/BMS-extension-needs-white-bg.txt";
+              fetch(listTexts).then((response) => {
+                return response.text();
+              }).then((text) => {
+                let lines = text.split(/\r?\n/);
+                for (let line of lines) {
+                  if(line == BROWSER_SIDEBAR_DATA.data[elem]["url"].split(",")[2]){
+                    sidebarItem.className += " extension-icon-add-white"
+                    break;
+                  }
+                }
+              });
+            } else {
+              sidebarItem.style.listStyleImage = "";
             }
 
             sidebarItem.onmouseover = bmsController.eventFunctions.sidebarItemMouse.mouseOver

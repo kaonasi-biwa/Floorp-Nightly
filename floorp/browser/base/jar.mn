@@ -25,3 +25,6 @@ browser.jar:
   content/browser/browser-verticaltabs.css      (content/browser-verticaltabs.css)
   content/browser/browser-verticaltabs.js       (content/browser-verticaltabs.js)
   content/browser/ua_data.js                    (content/ua_data.js)
+
+# extension list
+  content/browser/BMS-extension-needs-white-bg.txt  (sidebar-extension/BMS-extension-needs-white-bg.txt)

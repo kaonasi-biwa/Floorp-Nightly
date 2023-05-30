@@ -54,8 +54,12 @@
   margin-inline: 0 auto !important;
 }
 
-[TST-panel="true"] > .toolbarbutton-icon {
+.extension-icon-add-white > .toolbarbutton-icon {
   background: white;
+  padding: 1px;
+  border-radius: 2px;
+  scale: 1.1;
+
 }
 
 #sidebar-select-box {

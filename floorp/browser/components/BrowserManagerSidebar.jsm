@@ -149,7 +149,7 @@ let BrowserManagerSidebar = {
                   Math.max(...Object.keys(addon_manifest["icons"]))
                 ];
                 if (addon_icon_path === undefined) throw "Icon not found.";
-        
+
                 let addon_icon_url = addon_icon_path.startsWith("/") ?
                   `${addon_base_url}${addon_icon_path}` :
                   `${addon_base_url}/${addon_icon_path}`;
@@ -166,6 +166,26 @@ let BrowserManagerSidebar = {
           } else if(sbar_url.startsWith("extension")){
             let iconURL =  sbar_url.split(",")[4];
             elem.style.setProperty("--BMSIcon",`url(${iconURL})`)
+            elem.className += " extension-icon"
+            let listTexts = "chrome://browser/content/BMS-extension-needs-white-bg.txt";
+            fetch(listTexts).then((response) => {
+              return response.text();
+            }).then((text) => {
+              let lines = text.split(/\r?\n/);
+              for (let line of lines) {
+                if(line == sbar_url.split(",")[2]){
+                  elem.className += " extension-icon-add-white"
+                  break;
+                } else {
+                  elem.classList.remove("extension-icon-add-white")
+                }
+              }
+            });
+          }
+
+          if(!sbar_url.startsWith("extension")){
+            elem.classList.remove("extension-icon")
+            elem.classList.remove("extension-icon-add-white")
           }
     },
     getAdoonSidebarPage:async function(addonId){
