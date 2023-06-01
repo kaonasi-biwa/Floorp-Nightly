@@ -723,7 +723,7 @@ var gMainPane = {
     this.setInitialized();
   },
 
-  preInit() {
+  preInit() {/*
     promiseLoadHandlersList = new Promise((resolve, reject) => {
       // Load the data and build the list of handlers for applications pane.
       // By doing this after pageshow, we ensure it doesn't delay painting
@@ -745,7 +745,7 @@ var gMainPane = {
         },
         { once: true }
       );
-    });
+    });*/
   },
 
   handleSubcategory(subcategory) {

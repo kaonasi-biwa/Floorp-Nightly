@@ -62,5 +62,17 @@ Preferences.addAll([
       } else {
         this._sortColumn = document.getElementById("typeColumn");
       }
+      (async () => {
+        await gMainPane.initialized;
+        try {
+          gMainPane._initListEventHandlers();
+          gMainPane._loadData();
+          await gMainPane._rebuildVisibleTypes();
+          await gMainPane._rebuildView();
+          await gMainPane._sortListView();
+        } catch (ex) {
+        }
+      })();
     },
+          
   };
