@@ -209,6 +209,8 @@ downloading-red-color =
  .label = Highlight the Download Manager icon in red during download
 
 sidebar-preferences = Sidebar
+
+bsb-preferences = Browser Manager Sidebar Setting
 view-sidebar2-right = 
  .label = Display Browser Manager Sidebar on the Right
 enable-sidebar2 =
@@ -218,6 +220,14 @@ custom-URL-option = Set Webpanel URLs
 set-custom-URL-button =
     .label = Set Custom URLs...
     .accesskey = S
+
+pane-BSB-title = { bsb-header }
+category-BSB =
+    .tooltiptext = { pane-BSB-title }
+
+category-downloads = 
+    .tooltiptext = { files-and-applications-title }
+
 bsb-header = Browser Manager Sidebar
 bsb-context = Select Container Tabs
 bsb-userAgent-label = 

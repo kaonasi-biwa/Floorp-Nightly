@@ -14,6 +14,14 @@ XPCOMUtils.defineLazyGetter(this, "L10n", () => {
   ]);
 });
 
+Preferences.addAll([
+  { id: "floorp.browser.sidebar.right", type: "bool" },
+  { id: "floorp.browser.sidebar.enable", type: "bool" },
+  { id: "floorp.browser.sidebar2.mode", type: "int" },
+  { id: "floorp.browser.restore.sidebar.panel", type: "bool" },
+  { id: "floorp.browser.sidebar.useIconProvider", type: "string" },
+])
+
 var gBSBPane = {
   _pane: null,
   obsPanel(data_) {
@@ -49,8 +57,20 @@ var gBSBPane = {
     }.bind(this))
     this._list = document.getElementById("BSBView");
     this._pane = document.getElementById("paneBSB");
+
+    {
+      let prefName = "floorp.browser.sidebar2.global.webpanel.width";
+      let elem = document.getElementById("GlobalWidth");
+      elem.value = Services.prefs.getIntPref(prefName, undefined);
+      elem.addEventListener('change', function () {
+        Services.prefs.setIntPref(prefName, Number(elem.value));
+      });
+      Services.prefs.addObserver(prefName, function () {
+        elem.value = Services.prefs.getIntPref(prefName, undefined);
+      });
+    }
+
     this.panelSet()
-    document.getElementById("backtogeneral_").addEventListener("command", function () { gotoPref("general"); });
     document.getElementById("BSBAdd").addEventListener("command", function () {
       let updateNumberDate = new Date()
       let updateNumber = `w${updateNumberDate.getFullYear()}${updateNumberDate.getMonth()}${updateNumberDate.getDate()}${updateNumberDate.getHours()}${updateNumberDate.getMinutes()}${updateNumberDate.getSeconds()}`

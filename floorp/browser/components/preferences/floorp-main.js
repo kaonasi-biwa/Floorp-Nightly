@@ -11,16 +11,8 @@ Preferences.addAll([
   { id: "toolkit.legacyUserProfileCustomizations.script", type: "bool" },
   { id: "toolkit.tabbox.switchByScrolling", type: "bool" },
   { id: "browser.tabs.closeTabByDblclick", type: "bool" },
-  { id: "floorp.download.notification", type: "int" },
   { id: "floorp.browser.UserAgent", type: "int" },
-  { id: "floorp.legacy.dlui.enable", type: "bool" },
-  { id: "floorp.downloading.red.color", type: "bool" },
   { id: "floorp.browser.rest.mode", type: "bool" },
-  { id: "floorp.browser.sidebar.right", type: "bool" },
-  { id: "floorp.browser.sidebar.enable", type: "bool" },
-  { id: "floorp.browser.sidebar2.mode", type: "int" },
-  { id: "floorp.browser.restore.sidebar.panel", type: "bool" },
-  { id: "floorp.browser.sidebar.useIconProvider", type: "string" },
   { id: "floorp.disable.fullscreen.notification", type: "bool" },
   { id: "floorp.tabsleep.enabled", type: "bool" },
   { id: "floorp.tabs.showPinnedTabsTitle", type: "bool" },
@@ -52,18 +44,6 @@ window.addEventListener("pageshow", async function() {
           Services.startup.quit(Services.startup.eAttemptQuit | Services.startup.eRestart);
         }, 500);
       }
-    });
-  }
-
-  {
-    let prefName = "floorp.browser.sidebar2.global.webpanel.width";
-    let elem = document.getElementById("GlobalWidth");
-    elem.value = Services.prefs.getIntPref(prefName, undefined);
-    elem.addEventListener('change', function () {
-      Services.prefs.setIntPref(prefName, Number(elem.value));
-    });
-    Services.prefs.addObserver(prefName, function () {
-      elem.value = Services.prefs.getIntPref(prefName, undefined);
     });
   }
 
@@ -113,10 +93,6 @@ window.addEventListener("pageshow", async function() {
   }
     document.getElementById("floorpUAs").addEventListener("click", function () {
       setOverrideUA();
-  });
-
-  document.getElementById("SetCustomURL").addEventListener("click", function () {
-    window.location.href = "about:preferences#bSB";
   });
 
   document.getElementById("backUpNotesOption").addEventListener("click", function () {

@@ -158,34 +158,6 @@
     </radiogroup>
 </groupbox>
 
-<groupbox data-category="paneGeneral" hidden="true">
-    <html:h2 id="sidebarUI" data-l10n-id="sidebar-preferences"/>
-   <checkbox preference="floorp.browser.sidebar.enable" 
-              id="enable-sidebar2" data-l10n-id="enable-sidebar2" class="needreboot"/>             
-   <checkbox preference="floorp.browser.sidebar.right" 
-              id="sidebarposition" data-l10n-id="view-sidebar2-right"/>
-  <hbox>
-    <description flex="1" data-l10n-id="sidebar2-global-width"/>
-    <html:input type="number" min="186" value="0" id="GlobalWidth"/>
-  </hbox>
-  <hbox>
-    <description flex="1" data-l10n-id="custom-URL-option"/>
-    <button  data-l10n-id="set-custom-URL-button" is="highlightable-button"
-             class="accessory-button" id="SetCustomURL"/>
-  </hbox>
-  <hbox>
-    <description flex="1" data-l10n-id="use-icon-provider-option"/>
-    <menulist id="useIconProvider" preference="floorp.browser.sidebar.useIconProvider">
-      <menupopup>
-        <menuitem value="google" data-l10n-id="use-icon-provider-option-google"/>
-        <menuitem value="duckduckgo" data-l10n-id="use-icon-provider-option-duckduckgo"/>
-        <menuitem value="yandex" data-l10n-id="use-icon-provider-option-yandex"/>
-        <menuitem value="hatena" data-l10n-id="use-icon-provider-option-hatena"/>
-      </menupopup>
-    </menulist>
-  </hbox>
-</groupbox>
-
 <groupbox id="aboutMouseGesture" data-category="paneGeneral" hidden="true">
   <html:h2 id="mouse-gesture-header" data-l10n-id="mouse-gesture"/>
   <description id="mouse-gesture-description" data-l10n-id="mouse-gesture-description"/>
@@ -402,94 +374,6 @@
   <checkbox id="zoomText"
     data-l10n-id="preferences-zoom-text-only"/>
 
-</groupbox>
-
-<!-- Files and Applications -->
-<hbox id="filesAndApplicationsCategory"
-      class="subcategory"
-      hidden="true"
-      data-category="paneGeneral">
-  <html:h1 data-l10n-id="files-and-applications-title"/>
-</hbox>
-
-<!--Downloads-->
-<groupbox id="downloadsGroup" data-category="paneGeneral" hidden="true">
-  <label><html:h2 data-l10n-id="download-header"/></label>
-
-  <hbox id="saveWhere">
-    <label id="saveTo"
-           control="downloadFolder"
-           data-l10n-id="download-save-where"/>
-    <html:input id="downloadFolder"
-                type="text"
-                readonly="readonly"
-                aria-labelledby="saveTo"/>
-    <button id="chooseFolder"
-            is="highlightable-button"
-            class="accessory-button"
-            data-l10n-id="download-choose-folder"/>
-  </hbox>
-  <checkbox id="alwaysAsk"
-            data-l10n-id="download-always-ask-where"
-            preference="browser.download.useDownloadDir"/>
-  <checkbox 
-            data-l10n-id="download-mgr-UI"
-            preference="floorp.legacy.dlui.enable"/>
-  <checkbox 
-            data-l10n-id="downloading-red-color"
-            preference="floorp.downloading.red.color"/>
-  <label><description data-l10n-id="download-notification-preferences"/></label>
-  <radiogroup id="handleNewFileTypes" preference="floorp.download.notification">
-     <radio value="1" data-l10n-id="start-always-notify"/>
-     <radio value="2" data-l10n-id="finish-always-notify"/>
-     <radio value="3" data-l10n-id="always-notify"/>
-     <radio value="4" data-l10n-id="do-not-notify"/>
-  </radiogroup>
-</groupbox>
-
-<groupbox id="applicationsGroup" data-category="paneGeneral" hidden="true">
-  <label><html:h2 data-l10n-id="applications-header"/></label>
-  <description data-l10n-id="applications-description"/>
-  <search-textbox id="filter" flex="1"
-                  data-l10n-id="applications-filter"
-                  data-l10n-attrs="placeholder"
-                  aria-controls="handlersView"/>
-
-  <listheader id="handlersViewHeader">
-    <treecol id="typeColumn" data-l10n-id="applications-type-column" value="type"
-             persist="sortDirection"
-             flex="1" sortDirection="ascending"/>
-    <treecol id="actionColumn" data-l10n-id="applications-action-column" value="action"
-             persist="sortDirection"
-             flex="1"/>
-  </listheader>
-  <richlistbox id="handlersView"
-               preference="pref.downloads.disable_button.edit_actions"/>
-  <description id="handleNewFileTypesDesc"
-               data-l10n-id="applications-handle-new-file-types-description"/>
-  <radiogroup id="handleNewFileTypes"
-              preference="browser.download.always_ask_before_handling_new_types">
-    <radio id="saveForNewTypes"
-           value="false"
-           data-l10n-id="applications-save-for-new-types"/>
-    <radio id="askBeforeHandling"
-           value="true"
-           data-l10n-id="applications-ask-before-handling"/>
-  </radiogroup>
-</groupbox>
-
-
-<!-- DRM Content -->
-<groupbox id="drmGroup" data-category="paneGeneral" data-subcategory="drm" hidden="true">
-  <label><html:h2 data-l10n-id="drm-content-header"/></label>
-  <hbox align="center">
-    <checkbox id="playDRMContent" preference="media.eme.enabled"
-              class="tail-with-learn-more" data-l10n-id="play-drm-content" />
-    <html:a is="moz-support-link"
-      data-l10n-id="play-drm-content-learn-more"
-      support-page="drm-content"
-    />
-  </hbox>
 </groupbox>
 
 <hbox id="updatesCategory"
@@ -862,6 +746,21 @@
             preference="browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features"/>
     <label id="cfrFeaturesLearnMore" class="learnMore" data-l10n-id="browsing-cfr-recommendations-learn-more" is="text-link"/>
   </hbox>
+  
+</groupbox>
+<!-- DRM Content -->
+<groupbox id="drmGroup" data-category="paneGeneral" data-subcategory="drm" hidden="true">
+  <label><html:h2 data-l10n-id="drm-content-header"/></label>
+  <hbox align="center">
+    <checkbox id="playDRMContent" preference="media.eme.enabled"
+              class="tail-with-learn-more" data-l10n-id="play-drm-content" />
+    <html:a is="moz-support-link"
+      data-l10n-id="play-drm-content-learn-more"
+      support-page="drm-content"
+    />
+  </hbox>
+</groupbox>
+<groupbox id="uaGroup" data-category="paneGeneral" data-subcategory="userAgent" hidden="true">
   <label><html:h2 data-l10n-id="UserAgent-preference"/></label>
    <radiogroup id="floorpUAs" preference="floorp.browser.UserAgent">
      <radio value="0" data-l10n-id="default-useragent-mode"/>
