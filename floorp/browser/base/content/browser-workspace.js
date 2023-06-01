@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -8,7 +9,7 @@ const WORKSPACE_CURRENT_PREF = "floorp.browser.workspace.current";
 const WORKSPACE_ALL_PREF = "floorp.browser.workspace.all";
 const WORKSPACE_TABS_PREF = "floorp.browser.workspace.tabs.state";
 const l10n = new Localization(["browser/floorp.ftl"], true);
-const defaultWorkspaceName = l10n.formatValueSync("workspace-default")
+const defaultWorkspaceName = l10n.formatValueSync("workspace-default");
 
 const workspaceFunctions = {
   eventListeners: {
@@ -17,17 +18,31 @@ const workspaceFunctions = {
         let tabs = gBrowser.tabs;
         let lastTab = null;
         let firstTab = null;
-        document.querySelector(`[floorp-lastVisibleTab]`)?.removeAttribute("floorp-lastVisibleTab");
-        document.querySelector(`[floorp-firstVisibleTab]`)?.removeAttribute("floorp-firstVisibleTab");
+        document
+          .querySelector(`[floorp-lastVisibleTab]`)
+          ?.removeAttribute("floorp-lastVisibleTab");
+        document
+          .querySelector(`[floorp-firstVisibleTab]`)
+          ?.removeAttribute("floorp-firstVisibleTab");
         for (let i = 0; i < tabs.length; i++) {
           let tab = tabs[i];
           if (!tab.hasAttribute("floorp-workspace")) {
-            tab.setAttribute("floorp-workspace", Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF));
+            tab.setAttribute(
+              "floorp-workspace",
+              Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF)
+            );
           }
-          if (tab.getAttribute("floorp-workspace") == Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF)) {
+          if (
+            tab.getAttribute("floorp-workspace") ==
+            Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF)
+          ) {
             lastTab = tab;
           }
-          if (tab.getAttribute("floorp-workspace") == Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF) && firstTab == null) {
+          if (
+            tab.getAttribute("floorp-workspace") ==
+              Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF) &&
+            firstTab == null
+          ) {
             tab.setAttribute("floorp-firstVisibleTab", "true");
             firstTab = tab;
           }
@@ -38,9 +53,15 @@ const workspaceFunctions = {
 
       handleTabClose() {
         window.setTimeout(() => {
-          document.querySelector(`[floorp-firstVisibleTab]`)?.removeAttribute("floorp-firstVisibleTab");
-          document.querySelector(`[floorp-lastVisibleTab]`)?.removeAttribute("floorp-lastVisibleTab");
-          document.querySelector(`tab:not([hidden])`).setAttribute("floorp-firstVisibleTab", "true");
+          document
+            .querySelector(`[floorp-firstVisibleTab]`)
+            ?.removeAttribute("floorp-firstVisibleTab");
+          document
+            .querySelector(`[floorp-lastVisibleTab]`)
+            ?.removeAttribute("floorp-lastVisibleTab");
+          document
+            .querySelector(`tab:not([hidden])`)
+            .setAttribute("floorp-firstVisibleTab", "true");
           let elems = document.querySelectorAll(`tab:not([hidden])`);
           elems[elems.length - 1].setAttribute("floorp-lastVisibleTab", "true");
           workspaceFunctions.manageWorkspaceFunctions.saveWorkspaceState();
@@ -54,9 +75,15 @@ const workspaceFunctions = {
 
       handleTabMove() {
         workspaceFunctions.manageWorkspaceFunctions.saveWorkspaceState();
-        document.querySelector(`[floorp-firstVisibleTab]`)?.removeAttribute("floorp-firstVisibleTab");
-        document.querySelector(`[floorp-lastVisibleTab]`)?.removeAttribute("floorp-lastVisibleTab");
-        document.querySelector(`tab:not([hidden])`).setAttribute("floorp-firstVisibleTab", "true");
+        document
+          .querySelector(`[floorp-firstVisibleTab]`)
+          ?.removeAttribute("floorp-firstVisibleTab");
+        document
+          .querySelector(`[floorp-lastVisibleTab]`)
+          ?.removeAttribute("floorp-lastVisibleTab");
+        document
+          .querySelector(`tab:not([hidden])`)
+          .setAttribute("floorp-firstVisibleTab", "true");
         let elems = document.querySelectorAll(`tab:not([hidden])`);
         elems[elems.length - 1].setAttribute("floorp-lastVisibleTab", "true");
       },
@@ -69,45 +96,62 @@ const workspaceFunctions = {
       },
 
       handleWorkspaceTabPrefChange() {
-        document.querySelector("#workspace-button").style.display = Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF) ? "" : "none";
+        document.querySelector(
+          "#workspace-button"
+        ).style.display = Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)
+          ? ""
+          : "none";
         if (!Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) {
-          document.querySelector(`[floorp-firstVisibleTab]`)?.removeAttribute("floorp-firstVisibleTab");
-          document.querySelector(`[floorp-lastVisibleTab]`)?.removeAttribute("floorp-lastVisibleTab");
+          document
+            .querySelector(`[floorp-firstVisibleTab]`)
+            ?.removeAttribute("floorp-firstVisibleTab");
+          document
+            .querySelector(`[floorp-lastVisibleTab]`)
+            ?.removeAttribute("floorp-lastVisibleTab");
         }
         workspaceFunctions.manageWorkspaceFunctions.setCurrentWorkspace();
-      }
+      },
     },
 
     keyboradEventListeners: {
       handle_keydown(event) {
-        if (event.shiftKey && event.key === 'ArrowUp') {
+        if (event.shiftKey && event.key === "ArrowUp") {
           workspaceFunctions.manageWorkspaceFunctions.changeWorkspaceToBeforeNext();
-        } else if (event.shiftKey && event.key === 'ArrowDown') {
+        } else if (event.shiftKey && event.key === "ArrowDown") {
           workspaceFunctions.manageWorkspaceFunctions.changeWorkspaceToAfterNext();
         }
-      }
-    }
+      },
+    },
   },
   manageWorkspaceFunctions: {
-
     initWorkspace() {
       // First run
       if (!Services.prefs.prefHasUserValue(WORKSPACE_CURRENT_PREF)) {
-        Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, defaultWorkspaceName);
+        Services.prefs.setStringPref(
+          WORKSPACE_CURRENT_PREF,
+          defaultWorkspaceName
+        );
         Services.prefs.setStringPref(WORKSPACE_ALL_PREF, defaultWorkspaceName);
       }
-    
+
       let tabs = gBrowser.tabs;
-    
+
       if (Services.prefs.getStringPref(WORKSPACE_TABS_PREF) === "[]") {
         for (let i = 0; i < tabs.length; i++) {
-          tabs[i].setAttribute("floorp-workspace", Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF));
+          tabs[i].setAttribute(
+            "floorp-workspace",
+            Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF)
+          );
         }
       } else {
-        let tabsState = JSON.parse(Services.prefs.getStringPref(WORKSPACE_TABS_PREF));
+        let tabsState = JSON.parse(
+          Services.prefs.getStringPref(WORKSPACE_TABS_PREF)
+        );
         for (let i = 0; i < tabs.length; i++) {
           let tabStateSetting = tabsState[i];
-          let workspace = tabStateSetting?.[i]?.workspace ?? Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+          let workspace =
+            tabStateSetting?.[i]?.workspace ??
+            Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
           tabs[i].setAttribute("floorp-workspace", workspace);
         }
       }
@@ -125,74 +169,118 @@ const workspaceFunctions = {
           </menupopup>
         </toolbarbutton>
       `);
-      
+
       document.querySelector(".toolbar-items").before(toolbarButtonEle);
-      if(!Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) document.querySelector("#workspace-button").style.display = "none";
-    
+      if (!Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) {
+        document.querySelector("#workspace-button").style.display = "none";
+      }
+
       // Add workspace menu from preference
-      let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+      let workspaceAll = Services.prefs
+        .getStringPref(WORKSPACE_ALL_PREF)
+        .split(",");
       for (let i = 0; i < workspaceAll.length; i++) {
         let label = workspaceAll[i];
         workspaceFunctions.WorkspaceContextMenu.addWorkspaceElemToMenu(label);
       }
-    
+
       // Add attribute to tab
       workspaceFunctions.tabFunctions.addLastShowedWorkspaceTab();
-    
+
       //add keybooard shortcut
       let keyElem = document.createElement("key");
       keyElem.setAttribute("id", "floorp-workspace-key");
       keyElem.setAttribute("keycode", "VK_F9");
       keyElem.setAttribute("oncommand", "restartbrowser();");
       document.getElementById("mainKeyset").appendChild(keyElem);
-      
+
       workspaceFunctions.TabContextMenu.addContextMenuToTabContext();
       workspaceFunctions.manageWorkspaceFunctions.saveWorkspaceState();
       workspaceFunctions.WorkspaceContextMenu.setMenuItemCheckCSS();
     },
 
     addNewWorkspace() {
-      let allWorkspace = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+      let allWorkspace = Services.prefs
+        .getStringPref(WORKSPACE_ALL_PREF)
+        .split(",");
       let l10n = new Localization(["browser/floorp.ftl"], true);
       let prompts = Services.prompt;
-      let check = {value: false};
+      let check = { value: false };
       let pattern = /^[\p{L}\p{N}]+$/u;
-      let input = {value: ""};
-      let result = prompts.prompt(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("please-enter-workspace-name") + "\n" + l10n.formatValueSync("please-enter-workspace-name-2"), input, null, check);
-    
-      if (result && allWorkspace.indexOf(input.value) == -1 && input.value != "" && input.value.length < 20 && input.value != l10n.formatValueSync("workspace-default") && pattern.test(input.value)) {
+      let input = { value: "" };
+      let result = prompts.prompt(
+        null,
+        l10n.formatValueSync("workspace-prompt-title"),
+        l10n.formatValueSync("please-enter-workspace-name") +
+          "\n" +
+          l10n.formatValueSync("please-enter-workspace-name-2"),
+        input,
+        null,
+        check
+      );
+
+      if (
+        result &&
+        allWorkspace.includes(input.value) == -1 &&
+        input.value != "" &&
+        input.value.length < 20 &&
+        input.value != l10n.formatValueSync("workspace-default") &&
+        pattern.test(input.value)
+      ) {
         let label = input.value;
-        let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+        let workspaceAll = Services.prefs
+          .getStringPref(WORKSPACE_ALL_PREF)
+          .split(",");
         try {
           workspaceFunctions.WorkspaceContextMenu.addWorkspaceElemToMenu(label);
         } catch (e) {
-          prompts.alert(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("workspace-error") + "\n" + l10n.formatValueSync("workspace-error-discription"));
-          return;
+          prompts.alert(
+            null,
+            l10n.formatValueSync("workspace-prompt-title"),
+            l10n.formatValueSync("workspace-error") +
+              "\n" +
+              l10n.formatValueSync("workspace-error-discription")
+          );
         }
         workspaceAll.push(label);
         Services.prefs.setStringPref(WORKSPACE_ALL_PREF, workspaceAll);
-      } else if(result == false){
-        return;
+      } else if (result === false) {
+        /* empty */
       } else {
-        prompts.alert(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("workspace-error") + "\n" + l10n.formatValueSync("workspace-error-discription"));
+        prompts.alert(
+          null,
+          l10n.formatValueSync("workspace-prompt-title"),
+          l10n.formatValueSync("workspace-error") +
+            "\n" +
+            l10n.formatValueSync("workspace-error-discription")
+        );
       }
     },
 
     deleteworkspace(workspace) {
       if (workspace !== defaultWorkspaceName) {
-        let allWorkspaces = Services.prefs.getCharPref(WORKSPACE_ALL_PREF).split(",");
+        let allWorkspaces = Services.prefs
+          .getCharPref(WORKSPACE_ALL_PREF)
+          .split(",");
         let index = allWorkspaces.indexOf(workspace);
-        let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
-      
+        let currentWorkspace = Services.prefs.getStringPref(
+          WORKSPACE_CURRENT_PREF
+        );
+
         //move to other workspace
         if (currentWorkspace == workspace) {
-          workspaceFunctions.manageWorkspaceFunctions.changeWorkspace(allWorkspaces[0]);
-          Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, defaultWorkspaceName);
+          workspaceFunctions.manageWorkspaceFunctions.changeWorkspace(
+            allWorkspaces[0]
+          );
+          Services.prefs.setStringPref(
+            WORKSPACE_CURRENT_PREF,
+            defaultWorkspaceName
+          );
           workspaceFunctions.manageWorkspaceFunctions.setCurrentWorkspace();
         }
         allWorkspaces.splice(index, 1);
         Services.prefs.setCharPref(WORKSPACE_ALL_PREF, allWorkspaces.join(","));
-      
+
         //delete workspace tabs
         let tabs = gBrowser.tabs;
         for (let i = 0; i < tabs.length; i++) {
@@ -205,24 +293,43 @@ const workspaceFunctions = {
         //delete workspace menuitem
         let menuitem = document.getElementById(`workspace-box-${workspace}`);
         menuitem.remove();
-       }
+      }
     },
 
     renameWorkspace(label) {
-      if (label == defaultWorkspaceName) return;
+      if (label == defaultWorkspaceName) {
+        return;
+      }
       let prompts = Services.prompt;
       let l10n = new Localization(["browser/floorp.ftl"], true);
-      let check = {value: false};
+      let check = { value: false };
       let pattern = /^[\p{L}\p{N}]+$/u;
-      let input = {value: ""};
-      let result = prompts.prompt(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("please-enter-workspace-name") + "\n" + l10n.formatValueSync("please-enter-workspace-name-2"), input, null, check);
-    
-      if (result && input.value != "" && input.value.length < 20 && input.value != l10n.formatValueSync("workspace-default") && pattern.test(input.value)) {
-        let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+      let input = { value: "" };
+      let result = prompts.prompt(
+        null,
+        l10n.formatValueSync("workspace-prompt-title"),
+        l10n.formatValueSync("please-enter-workspace-name") +
+          "\n" +
+          l10n.formatValueSync("please-enter-workspace-name-2"),
+        input,
+        null,
+        check
+      );
+
+      if (
+        result &&
+        input.value != "" &&
+        input.value.length < 20 &&
+        input.value != l10n.formatValueSync("workspace-default") &&
+        pattern.test(input.value)
+      ) {
+        let workspaceAll = Services.prefs
+          .getStringPref(WORKSPACE_ALL_PREF)
+          .split(",");
         let index = workspaceAll.indexOf(label);
         workspaceAll[index] = input.value;
         Services.prefs.setStringPref(WORKSPACE_ALL_PREF, workspaceAll);
-    
+
         //Tabs
         let tabs = gBrowser.tabs;
         for (let i = 0; i < tabs.length; i++) {
@@ -232,87 +339,148 @@ const workspaceFunctions = {
           }
         }
         workspaceFunctions.manageWorkspaceFunctions.saveWorkspaceState();
-    
+
         //lastShowWorkspaceTab
-        document.querySelector(`[lastShowWorkspaceTab-${label}]`)?.setAttribute(`lastShowWorkspaceTab-${input.value}`, "true");
-    
+        document
+          .querySelector(`[lastShowWorkspaceTab-${label}]`)
+          ?.setAttribute(`lastShowWorkspaceTab-${input.value}`, "true");
+
         //menuitem
         let menuitem = document.querySelector(`#workspace-box-${label}`);
         let nextAfterMenuitem = menuitem.nextSibling;
-    
+
         menuitem.remove();
-        workspaceFunctions.WorkspaceContextMenu.addWorkspaceElemToMenu(input.value, nextAfterMenuitem);
-    
-        let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
-    
+        workspaceFunctions.WorkspaceContextMenu.addWorkspaceElemToMenu(
+          input.value,
+          nextAfterMenuitem
+        );
+
+        let currentWorkspace = Services.prefs.getStringPref(
+          WORKSPACE_CURRENT_PREF
+        );
+
         if (currentWorkspace == label) {
           Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, input.value);
         }
-      } else if(result == false){
-        return;
+      } else if (result === false) {
+        /* empty */
       } else {
-        prompts.alert(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("workspace-error") + "\n" + l10n.formatValueSync("workspace-error-discription"));
+        prompts.alert(
+          null,
+          l10n.formatValueSync("workspace-prompt-title"),
+          l10n.formatValueSync("workspace-error") +
+            "\n" +
+            l10n.formatValueSync("workspace-error-discription")
+        );
       }
     },
 
-    addNewWorkspace () {
-      let allWorkspace = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+    // eslint-disable-next-line no-dupe-keys
+    addNewWorkspace() {
+      let allWorkspace = Services.prefs
+        .getStringPref(WORKSPACE_ALL_PREF)
+        .split(",");
       let l10n = new Localization(["browser/floorp.ftl"], true);
       prompts = Services.prompt;
-      let check = {value: false};
+      let check = { value: false };
       let pattern = /^[\p{L}\p{N}]+$/u;
-      let input = {value: ""};
-      let result = prompts.prompt(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("please-enter-workspace-name") + "\n" + l10n.formatValueSync("please-enter-workspace-name-2"), input, null, check);
-    
-      if (result && allWorkspace.indexOf(input.value) == -1 && input.value != "" && input.value.length < 20 && input.value != l10n.formatValueSync("workspace-default") && pattern.test(input.value)) {
+      let input = { value: "" };
+      let result = prompts.prompt(
+        null,
+        l10n.formatValueSync("workspace-prompt-title"),
+        l10n.formatValueSync("please-enter-workspace-name") +
+          "\n" +
+          l10n.formatValueSync("please-enter-workspace-name-2"),
+        input,
+        null,
+        check
+      );
+
+      if (
+        result &&
+        !allWorkspace.includes(input.value) &&
+        input.value != "" &&
+        input.value.length < 20 &&
+        input.value != l10n.formatValueSync("workspace-default") &&
+        pattern.test(input.value)
+      ) {
         let label = input.value;
-        let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+        let workspaceAll = Services.prefs
+          .getStringPref(WORKSPACE_ALL_PREF)
+          .split(",");
         try {
           workspaceFunctions.WorkspaceContextMenu.addWorkspaceElemToMenu(label);
         } catch (e) {
-          prompts.alert(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("workspace-error") + "\n" + l10n.formatValueSync("workspace-error-discription"));
+          prompts.alert(
+            null,
+            l10n.formatValueSync("workspace-prompt-title"),
+            l10n.formatValueSync("workspace-error") +
+              "\n" +
+              l10n.formatValueSync("workspace-error-discription")
+          );
           return;
         }
         workspaceAll.push(label);
         Services.prefs.setStringPref(WORKSPACE_ALL_PREF, workspaceAll);
-      } else if(result == false){
-        return;
+      } else if (result === false) {
+        /* empty */
       } else {
-        prompts.alert(null, l10n.formatValueSync("workspace-prompt-title"), l10n.formatValueSync("workspace-error") + "\n" + l10n.formatValueSync("workspace-error-discription"));
+        prompts.alert(
+          null,
+          l10n.formatValueSync("workspace-prompt-title"),
+          l10n.formatValueSync("workspace-error") +
+            "\n" +
+            l10n.formatValueSync("workspace-error-discription")
+        );
       }
     },
 
     setCurrentWorkspace() {
       let tabs = gBrowser.tabs;
-      let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
-    
-      document.querySelector(`[floorp-lastVisibleTab]`)?.removeAttribute("floorp-lastVisibleTab")
-      document.querySelector(`[floorp-firstVisibleTab]`)?.removeAttribute("floorp-firstVisibleTab")
-      let lastTab = null
-      let firstTab = null
+      let currentWorkspace = Services.prefs.getStringPref(
+        WORKSPACE_CURRENT_PREF
+      );
+
+      document
+        .querySelector(`[floorp-lastVisibleTab]`)
+        ?.removeAttribute("floorp-lastVisibleTab");
+      document
+        .querySelector(`[floorp-firstVisibleTab]`)
+        ?.removeAttribute("floorp-firstVisibleTab");
+      let lastTab = null;
+      let firstTab = null;
       for (let i = 0; i < tabs.length; i++) {
         let tab = tabs[i];
         let workspace = tab.getAttribute("floorp-workspace");
-        if (workspace == currentWorkspace || !Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)) {
+        if (
+          workspace == currentWorkspace ||
+          !Services.prefs.getBoolPref(WORKSPACE_TAB_ENABLED_PREF)
+        ) {
           gBrowser.showTab(tab);
-          lastTab = tab
-          if(firstTab == null){
-            tab.setAttribute("floorp-firstVisibleTab","true")
-            firstTab = tab
+          lastTab = tab;
+          if (firstTab == null) {
+            tab.setAttribute("floorp-firstVisibleTab", "true");
+            firstTab = tab;
           }
         } else {
           gBrowser.hideTab(tab);
         }
-    
-        if(currentWorkspace != l10n.formatValueSync("workspace-default")){
-          document.getElementById("workspace-button").setAttribute("label", currentWorkspace);
-          document.querySelector("#workspace-button > .toolbarbutton-text").style.display = "inherit"
+
+        if (currentWorkspace != l10n.formatValueSync("workspace-default")) {
+          document
+            .getElementById("workspace-button")
+            .setAttribute("label", currentWorkspace);
+          document.querySelector(
+            "#workspace-button > .toolbarbutton-text"
+          ).style.display = "inherit";
         } else {
           document.getElementById("workspace-button").removeAttribute("label");
-          document.querySelector("#workspace-button > .toolbarbutton-text").style.display = "none"
+          document.querySelector(
+            "#workspace-button > .toolbarbutton-text"
+          ).style.display = "none";
         }
       }
-      lastTab?.setAttribute("floorp-lastVisibleTab","true")
+      lastTab?.setAttribute("floorp-lastVisibleTab", "true");
     },
 
     saveWorkspaceState() {
@@ -321,45 +489,66 @@ const workspaceFunctions = {
       for (let i = 0; i < tabs.length; i++) {
         let tab = tabs[i];
         let tabState = {
-         [i]: {
-            "workspace": tab.getAttribute("floorp-workspace"),
-          }
-        }
+          [i]: {
+            workspace: tab.getAttribute("floorp-workspace"),
+          },
+        };
         tabStateObject.push(tabState);
       }
-      Services.prefs.setStringPref(WORKSPACE_TABS_PREF, JSON.stringify(tabStateObject));
+      Services.prefs.setStringPref(
+        WORKSPACE_TABS_PREF,
+        JSON.stringify(tabStateObject)
+      );
     },
-    
+
     changeWorkspaceToAfterNext() {
-      let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
-      let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+      let currentWorkspace = Services.prefs.getStringPref(
+        WORKSPACE_CURRENT_PREF
+      );
+      let workspaceAll = Services.prefs
+        .getStringPref(WORKSPACE_ALL_PREF)
+        .split(",");
       let index = workspaceAll.indexOf(currentWorkspace);
       if (index == workspaceAll.length - 1) {
         return;
       }
       let afterWorkspace = workspaceAll[index + 1];
-      workspaceFunctions.manageWorkspaceFunctions.changeWorkspace(afterWorkspace);
+      workspaceFunctions.manageWorkspaceFunctions.changeWorkspace(
+        afterWorkspace
+      );
       workspaceFunctions.manageWorkspaceFunctions.setCurrentWorkspace();
     },
 
     changeWorkspaceToNext() {
-      let allWorkspaces = Services.prefs.getCharPref(WORKSPACE_ALL_PREF).split(",");
-      let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+      let allWorkspaces = Services.prefs
+        .getCharPref(WORKSPACE_ALL_PREF)
+        .split(",");
+      let currentWorkspace = Services.prefs.getStringPref(
+        WORKSPACE_CURRENT_PREF
+      );
       let index = allWorkspaces.indexOf(currentWorkspace);
       let nextWorkspace = allWorkspaces[index + 1] ?? allWorkspaces[0];
-      workspaceFunctions.manageWorkspaceFunctions.changeWorkspace(nextWorkspace);
+      workspaceFunctions.manageWorkspaceFunctions.changeWorkspace(
+        nextWorkspace
+      );
     },
 
     changeWorkspaceToBeforeNext() {
-      let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
-      let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
+      let currentWorkspace = Services.prefs.getStringPref(
+        WORKSPACE_CURRENT_PREF
+      );
+      let workspaceAll = Services.prefs
+        .getStringPref(WORKSPACE_ALL_PREF)
+        .split(",");
       let index = workspaceAll.indexOf(currentWorkspace);
       if (index == 0) {
         return;
       }
       let beforeWorkspace = workspaceAll[index - 1];
 
-      workspaceFunctions.manageWorkspaceFunctions.changeWorkspace(beforeWorkspace);
+      workspaceFunctions.manageWorkspaceFunctions.changeWorkspace(
+        beforeWorkspace
+      );
       workspaceFunctions.manageWorkspaceFunctions.setCurrentWorkspace();
     },
 
@@ -367,35 +556,43 @@ const workspaceFunctions = {
       let tabs = gBrowser.tabs;
 
       Services.prefs.setStringPref(WORKSPACE_CURRENT_PREF, label);
-      if(!workspaceFunctions.tabFunctions.checkWorkspaceLastShowedTabAttributeExist(label)){
-        document.querySelector(`[floorp-workspace="${label}"]`)?.setAttribute(`lastShowWorkspaceTab-${label}`, "true");
+      if (
+        !workspaceFunctions.tabFunctions.checkWorkspaceLastShowedTabAttributeExist(
+          label
+        )
+      ) {
+        document
+          .querySelector(`[floorp-workspace="${label}"]`)
+          ?.setAttribute(`lastShowWorkspaceTab-${label}`, "true");
       }
       for (let i = 0; i < tabs.length; i++) {
         let tab = tabs[i];
-        if(tab.getAttribute(`lastShowWorkspaceTab-${label}`) == "true"){
+        if (tab.getAttribute(`lastShowWorkspaceTab-${label}`) == "true") {
           gBrowser.selectedTab = tab;
           break;
-        } else if(i == tabs.length - 1){
+        } else if (i == tabs.length - 1) {
           gBrowser.addTab("about:newtab", {
             skipAnimation: true,
             inBackground: false,
-            triggeringPrincipal: Services.scriptSecurityManager.getSystemPrincipal()
+            triggeringPrincipal: Services.scriptSecurityManager.getSystemPrincipal(),
           });
         }
       }
       workspaceFunctions.manageWorkspaceFunctions.setCurrentWorkspace();
       workspaceFunctions.manageWorkspaceFunctions.saveWorkspaceState();
-    }
-    
+    },
   },
-  
+
   tabFunctions: {
     moveTabToOtherWorkspace(tab, workspace) {
       //checkTabisCurrentTab
-      if(tab == gBrowser.selectedTab && workspaceFunctions.tabFunctions.getNextToWorkspaceTab() != null){
+      if (
+        tab == gBrowser.selectedTab &&
+        workspaceFunctions.tabFunctions.getNextToWorkspaceTab() != null
+      ) {
         gBrowser.selectedTab = workspaceFunctions.tabFunctions.getNextToWorkspaceTab();
       }
-    
+
       let willMoveWorkspace = workspace;
       tab.setAttribute("floorp-workspace", willMoveWorkspace);
 
@@ -403,20 +600,31 @@ const workspaceFunctions = {
       workspaceFunctions.manageWorkspaceFunctions.setCurrentWorkspace();
     },
 
-    addLastShowedWorkspaceTab(){
+    addLastShowedWorkspaceTab() {
       //add lastShowWorkspaceTab
       let currentTab = gBrowser.selectedTab;
-      let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
-  
-      document.querySelector(`[lastShowWorkspaceTab-${currentWorkspace}]`)?.removeAttribute(`lastShowWorkspaceTab-${currentWorkspace}`)
-      currentTab.setAttribute(`lastShowWorkspaceTab-${currentWorkspace}`,"true")
+      let currentWorkspace = Services.prefs.getStringPref(
+        WORKSPACE_CURRENT_PREF
+      );
+
+      document
+        .querySelector(`[lastShowWorkspaceTab-${currentWorkspace}]`)
+        ?.removeAttribute(`lastShowWorkspaceTab-${currentWorkspace}`);
+      currentTab.setAttribute(
+        `lastShowWorkspaceTab-${currentWorkspace}`,
+        "true"
+      );
     },
 
-    checkTabsLength(){
+    checkTabsLength() {
       let tabs = gBrowser.tabs;
-      for(let i = 0; i < tabs.length; i++){
-        if(TabContextMenu.contextTab.getAttribute("firstVisibleTab") == "true"){
-          document.getElementById("context_MoveOtherWorkspace").setAttribute("disabled", "true");
+      for (let i = 0; i < tabs.length; i++) {
+        if (
+          TabContextMenu.contextTab.getAttribute("firstVisibleTab") == "true"
+        ) {
+          document
+            .getElementById("context_MoveOtherWorkspace")
+            .setAttribute("disabled", "true");
         }
       }
     },
@@ -426,7 +634,11 @@ const workspaceFunctions = {
       let nextTab = null;
       for (let i = 0; i < tabs.length; i++) {
         let tab = tabs[i];
-        if (tab.getAttribute("floorp-workspace") == gBrowser.selectedTab.getAttribute("floorp-workspace") && tab != gBrowser.selectedTab) {
+        if (
+          tab.getAttribute("floorp-workspace") ==
+            gBrowser.selectedTab.getAttribute("floorp-workspace") &&
+          tab != gBrowser.selectedTab
+        ) {
           nextTab = tab;
           break;
         }
@@ -445,12 +657,12 @@ const workspaceFunctions = {
         }
       }
       return exist;
-    }
+    },
   },
 
   TabContextMenu: {
-     addContextMenuToTabContext() {
-      let beforeElem = document.getElementById("context_moveTabOptions")
+    addContextMenuToTabContext() {
+      let beforeElem = document.getElementById("context_moveTabOptions");
       let menuitemElem = window.MozXULElement.parseXULToFragment(`
       <menu id="context_MoveOtherWorkspace" data-l10n-id="move-tab-another-workspace" accesskey="D">
           <menupopup id="workspaceTabContextMenu"
@@ -460,36 +672,41 @@ const workspaceFunctions = {
       beforeElem.before(menuitemElem);
     },
 
-    CreateWorkspaceContextMenu(){
+    CreateWorkspaceContextMenu() {
       //delete already exsist items
       let menuElem = document.getElementById("workspaceTabContextMenu");
-      while(menuElem.firstChild){
-        menuElem.removeChild(menuElem.firstChild);
+      while (menuElem.firstChild) {
+        menuElem.firstChild.remove();
       }
-    
+
       //Rebuild context menu
-      if(workspaceFunctions.tabFunctions.getNextToWorkspaceTab() == null){
+      if (workspaceFunctions.tabFunctions.getNextToWorkspaceTab() == null) {
         let menuItem = window.MozXULElement.parseXULToFragment(`
          <menuitem data-l10n-id="workspace-context-menu-selected-tab" disabled="true"/>
-        `)
+        `);
         let parentElem = document.getElementById("workspaceTabContextMenu");
         parentElem.appendChild(menuItem);
         return;
       }
-    
-      let workspaceAll = Services.prefs.getStringPref(WORKSPACE_ALL_PREF).split(",");
-      for(let i = 0; i < workspaceAll.length; i++){
-        let workspace = workspaceAll[i]
+
+      let workspaceAll = Services.prefs
+        .getStringPref(WORKSPACE_ALL_PREF)
+        .split(",");
+      for (let i = 0; i < workspaceAll.length; i++) {
+        let workspace = workspaceAll[i];
         let menuItem = window.MozXULElement.parseXULToFragment(`
           <menuitem id="workspaceID-${workspace}" class="workspaceContextMenuItems"
                     label="${workspace}"  oncommand="workspaceFunctions.tabFunctions.moveTabToOtherWorkspace(TabContextMenu.contextTab, '${workspace}');"/>
-        `)
+        `);
         let parentElem = document.getElementById("workspaceTabContextMenu");
-        if(workspace != TabContextMenu.contextTab.getAttribute("floorp-workspace")){
+        if (
+          workspace !=
+          TabContextMenu.contextTab.getAttribute("floorp-workspace")
+        ) {
           parentElem.appendChild(menuItem);
         }
       }
-    }
+    },
   },
 
   WorkspaceContextMenu: {
@@ -505,19 +722,23 @@ const workspaceFunctions = {
        <menuseparator class="workspace-item-separator"/>
       </vbox>
     `);
-    
+
       if (nextElem) {
         nextElem.before(workspaceItemElem);
       } else {
-        document.getElementById("addNewWorkspaceButton").before(workspaceItemElem);
+        document
+          .getElementById("addNewWorkspaceButton")
+          .before(workspaceItemElem);
       }
-      
+
       if (label !== defaultWorkspaceName) {
         let deleteButtonElem = window.MozXULElement.parseXULToFragment(`
             <toolbarbutton id="workspace-delete" class="workspace-item-delete toolbarbutton-1"
                            oncommand="workspaceFunctions.manageWorkspaceFunctions.deleteworkspace('${label}')"/>
         `);
-        document.getElementById(`workspace-${label}`).appendChild(deleteButtonElem);
+        document
+          .getElementById(`workspace-${label}`)
+          .appendChild(deleteButtonElem);
       }
     },
 
@@ -527,20 +748,28 @@ const workspaceFunctions = {
       for (let i = 0; i < oldMenuItems.length; i++) {
         oldMenuItems[i].remove();
       }
-    
+
       let menuitemElem = window.MozXULElement.parseXULToFragment(`
-      <menuitem class="workspace-item-contexts" id="workspace-item-context-rename" data-l10n-id="workspace-rename" oncommand="workspaceFunctions.manageWorkspaceFunctions.renameWorkspace('${e.explicitOriginalTarget.getAttribute("label")}')"/>
+      <menuitem class="workspace-item-contexts" id="workspace-item-context-rename" data-l10n-id="workspace-rename" oncommand="workspaceFunctions.manageWorkspaceFunctions.renameWorkspace('${e.explicitOriginalTarget.getAttribute(
+        "label"
+      )}')"/>
       `);
 
-      if (e.explicitOriginalTarget.getAttribute("label") !== defaultWorkspaceName) {
-        document.getElementById("workspace-item-context").appendChild(menuitemElem);
+      if (
+        e.explicitOriginalTarget.getAttribute("label") !== defaultWorkspaceName
+      ) {
+        document
+          .getElementById("workspace-item-context")
+          .appendChild(menuitemElem);
       }
     },
 
     setMenuItemCheckCSS() {
-      let currentWorkspace = Services.prefs.getStringPref(WORKSPACE_CURRENT_PREF);
+      let currentWorkspace = Services.prefs.getStringPref(
+        WORKSPACE_CURRENT_PREF
+      );
       document.getElementById("workspaceMenuItemCheckCSS")?.remove();
-      
+
       let Tag = document.createElement("style");
       Tag.innerText = `
         .workspace-item[workspace="${currentWorkspace}"] > .toolbarbutton-icon {
@@ -549,25 +778,52 @@ const workspaceFunctions = {
       `;
       Tag.setAttribute("id", "workspaceMenuItemCheckCSS");
       document.head.appendChild(Tag);
+    },
+  },
+};
+
+window.setTimeout(function() {
+  let list = Services.wm.getEnumerator("navigator:browser");
+  while (list.hasMoreElements()) {
+    if (list.getNext() != window) {
+      return;
     }
   }
-}
-
-window.setTimeout(function(){
-  let list = Services.wm.getEnumerator("navigator:browser");
-  while (list.hasMoreElements()) { if (list.getNext() != window) return; }
 
   //run codes
   workspaceFunctions.manageWorkspaceFunctions.initWorkspace();
   workspaceFunctions.manageWorkspaceFunctions.setCurrentWorkspace();
 
-  gBrowser.tabContainer.addEventListener("TabOpen",      workspaceFunctions.eventListeners.tabAddEventListeners.handleTabOpen, false);
-  gBrowser.tabContainer.addEventListener("TabClose",     workspaceFunctions.eventListeners.tabAddEventListeners.handleTabClose, false);
-  gBrowser.tabContainer.addEventListener("TabMove",      workspaceFunctions.eventListeners.tabAddEventListeners.handleTabMove, false);
-  gBrowser.tabContainer.addEventListener("TabSelect",    workspaceFunctions.eventListeners.tabAddEventListeners.handleTabSelect, false);
+  gBrowser.tabContainer.addEventListener(
+    "TabOpen",
+    workspaceFunctions.eventListeners.tabAddEventListeners.handleTabOpen
+  );
+  gBrowser.tabContainer.addEventListener(
+    "TabClose",
+    workspaceFunctions.eventListeners.tabAddEventListeners.handleTabClose
+  );
+  gBrowser.tabContainer.addEventListener(
+    "TabMove",
+    workspaceFunctions.eventListeners.tabAddEventListeners.handleTabMove
+  );
+  gBrowser.tabContainer.addEventListener(
+    "TabSelect",
+    workspaceFunctions.eventListeners.tabAddEventListeners.handleTabSelect
+  );
 
-  Services.prefs.addObserver(WORKSPACE_CURRENT_PREF,     workspaceFunctions.eventListeners.prefsEventListeners.handleWorkspacePrefChange, false);
-  Services.prefs.addObserver(WORKSPACE_TAB_ENABLED_PREF, workspaceFunctions.eventListeners.prefsEventListeners.handleWorkspaceTabPrefChange, false);
+  Services.prefs.addObserver(
+    WORKSPACE_CURRENT_PREF,
+    workspaceFunctions.eventListeners.prefsEventListeners
+      .handleWorkspacePrefChange
+  );
+  Services.prefs.addObserver(
+    WORKSPACE_TAB_ENABLED_PREF,
+    workspaceFunctions.eventListeners.prefsEventListeners
+      .handleWorkspaceTabPrefChange
+  );
 
-  document.addEventListener('keydown', workspaceFunctions.eventListeners.keyboradEventListeners.handle_keydown, false);
+  document.addEventListener(
+    "keydown",
+    workspaceFunctions.eventListeners.keyboradEventListeners.handle_keydown
+  );
 }, 1000);
