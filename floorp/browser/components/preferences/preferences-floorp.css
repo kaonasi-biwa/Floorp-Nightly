@@ -2,10 +2,14 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this file,
    - You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-   #trackingGroup[hidden="true"] {
+  :root {
+    --in-content-sidebar-width: 275px !important;
+  }
+
+  #trackingGroup[hidden="true"] {
     display: none !important;
   }
-  
+
   #trackingGroup {
     display: unset;
   }
@@ -202,11 +206,7 @@
   .themes {
     padding-top: 20px;
   }
-  
-   :root {
-    --in-content-sidebar-width: 265px !important;
-  }
-  
+
   #floorp-header::before {
     content: "\A" !important;
     white-space: pre !important;
