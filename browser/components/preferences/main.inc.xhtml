@@ -158,34 +158,6 @@
     </radiogroup>
 </groupbox>
 
-<groupbox data-category="paneGeneral" hidden="true">
-    <html:h2 id="sidebarUI" data-l10n-id="sidebar-preferences"/>
-   <checkbox preference="floorp.browser.sidebar.enable" 
-              id="enable-sidebar2" data-l10n-id="enable-sidebar2" class="needreboot"/>             
-   <checkbox preference="floorp.browser.sidebar.right" 
-              id="sidebarposition" data-l10n-id="view-sidebar2-right"/>
-  <hbox>
-    <description flex="1" data-l10n-id="sidebar2-global-width"/>
-    <html:input type="number" min="186" value="0" id="GlobalWidth"/>
-  </hbox>
-  <hbox>
-    <description flex="1" data-l10n-id="custom-URL-option"/>
-    <button  data-l10n-id="set-custom-URL-button" is="highlightable-button"
-             class="accessory-button" id="SetCustomURL"/>
-  </hbox>
-  <hbox>
-    <description flex="1" data-l10n-id="use-icon-provider-option"/>
-    <menulist id="useIconProvider" preference="floorp.browser.sidebar.useIconProvider">
-      <menupopup>
-        <menuitem value="google" data-l10n-id="use-icon-provider-option-google"/>
-        <menuitem value="duckduckgo" data-l10n-id="use-icon-provider-option-duckduckgo"/>
-        <menuitem value="yandex" data-l10n-id="use-icon-provider-option-yandex"/>
-        <menuitem value="hatena" data-l10n-id="use-icon-provider-option-hatena"/>
-      </menupopup>
-    </menulist>
-  </hbox>
-</groupbox>
-
 <groupbox id="aboutMouseGesture" data-category="paneGeneral" hidden="true">
   <html:h2 id="mouse-gesture-header" data-l10n-id="mouse-gesture"/>
   <description id="mouse-gesture-description" data-l10n-id="mouse-gesture-description"/>

@@ -25,6 +25,10 @@
   #category-design>.category-icon {
     list-style-image: url("chrome://browser/skin/customize.svg") !important;
   }
+
+  #category-BSB>.category-icon {
+    list-style-image: url("chrome://browser/skin/sidebars.svg") !important;
+  }
   
   #communityDesc {
     padding: 25px 0px 25px 0px;
