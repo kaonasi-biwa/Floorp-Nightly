@@ -225,6 +225,9 @@ pane-BSB-title = { bsb-header }
 category-BSB =
     .tooltiptext = { pane-BSB-title }
 
+category-downloads = 
+    .tooltiptext = { files-and-applications-title }
+
 bsb-header = Browser Manager Sidebar
 bsb-context = Select Container Tabs
 bsb-userAgent-label = 

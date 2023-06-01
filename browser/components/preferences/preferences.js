@@ -206,6 +206,7 @@ function init_all() {
   register_module("paneLepton", gLeptonPane);
   register_module("paneNotes", gNotesPane);
   register_module("paneBSB", gBSBPane);
+  register_module("paneDownloads", gDownloads);
   register_module("paneUserjs", gUserjsPane);
   register_module("paneContainers", gContainersPane);
   if (Services.prefs.getBoolPref("browser.preferences.experimental")) {
