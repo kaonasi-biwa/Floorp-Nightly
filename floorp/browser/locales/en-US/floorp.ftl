@@ -215,6 +215,8 @@ view-sidebar2-right =
  .label = Display Browser Manager Sidebar on the Right
 enable-sidebar2 =
  .label = Enable Browser Manager Sidebar
+visible-bms = 
+ .label = Visible Browser Manager Sidebar
 
 custom-URL-option = Set Webpanel URLs
 set-custom-URL-button =

@@ -283,10 +283,16 @@
   list-style-image: var(--BMSIcon,url("chrome://devtools/skin/images/globe.svg"));
 }
 
-:root[inDOMFullscreen] :is(#sidebar-select-box),
-:root[inFullscreen]:not([macOSNativeFullscreen]) :is(#sidebar-select-box),
-*|*:root[chromehidden~="toolbar"] #sidebar-select-box {
+:is(:root[inDOMFullscreen],
+:root[inFullscreen]:not([macOSNativeFullscreen]),
+*|*:root[chromehidden~="toolbar"],
+:root[invisibleBMS]) #sidebar-select-box {
   display: none;
+}
+
+:root[invisibleBMS] #sidebar2-box{
+max-width: 0px !important;
+min-width: 0px !important;
 }
 
 #bsb-context-add, #bsb-context-link-add {
